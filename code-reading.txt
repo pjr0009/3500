@@ -80,3 +80,28 @@ not being set until later assignments
 Therefore, with HZ = 100, the frequency of the hardclock is 100
 interrupts/second
 
+
+8) What functions comprise the standard interface to a VFS device? 
+
+All of the functions defined in the vfs header file - vfs.h
+
+9) How many characters are allowed in a volume name
+
+on file systems that support the concept of a volume name, 32 characters.
+
+command used: grep -r "name" . | grep "length"
+
+source:
+fs.h - "* fs_getvolname may return NULL on filesystem types that don't
+ * support the concept of a volume name."
+
+./kern/sfs.h:#define SFS_VOLNAME_SIZE  32            /* max length of volume
+name */
+
+./kern/sfs.h:	char sp_volname[SFS_VOLNAME_SIZE];  /* Name of this volume */
+
+10) How many direct blocks does a SFS file have?
+
+15
+
+source - #define SFS_NDIRECT       15            /* # of direct blocks in inode */
