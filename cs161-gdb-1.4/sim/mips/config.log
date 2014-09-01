@@ -1,0 +1,97 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:703: checking how to run the C preprocessor
+configure:783: checking whether make sets ${MAKE}
+configure:810: checking for POSIXized ISC
+configure:831: checking for ANSI C header files
+configure:935: checking for working const
+configure:1010: checking for inline
+configure:1050: checking for off_t
+configure:1083: checking for size_t
+configure:1118: checking for working alloca.h
+configure:1151: checking for alloca
+configure:1353: checking for unistd.h
+configure:1392: checking for getpagesize
+configure:1445: checking for working mmap
+configure:1616: checking for Cygwin environment
+configure:1649: checking for mingw32 environment
+configure:1728: checking host system type
+configure:1749: checking target system type
+configure:1767: checking build system type
+configure:1811: checking for gcc
+configure:1924: checking whether the C compiler (gcc -g -O2 ) works
+configure:1940: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1966: checking whether the C compiler (gcc -g -O2 ) is a cross-compiler
+configure:1971: checking whether we are using GNU C
+configure:1999: checking whether gcc accepts -g
+configure:2042: checking for a BSD compatible install
+configure:2110: checking for ranlib
+configure:2145: checking for argz.h
+configure:2145: checking for limits.h
+configure:2145: checking for locale.h
+configure:2145: checking for nl_types.h
+configure:2145: checking for malloc.h
+configure:2145: checking for string.h
+configure:2145: checking for unistd.h
+configure:2145: checking for values.h
+configure:2145: checking for sys/param.h
+configure:2185: checking for getcwd
+configure:2185: checking for munmap
+configure:2185: checking for putenv
+configure:2185: checking for setenv
+configure:2185: checking for setlocale
+configure:2185: checking for strchr
+configure:2185: checking for strcasecmp
+configure:2185: checking for __argz_count
+configure:2185: checking for __argz_stringify
+configure:2185: checking for __argz_next
+configure:2304: checking for LC_MESSAGES
+configure:2337: checking whether NLS is requested
+configure:2357: checking whether included gettext is requested
+configure:2376: checking for libintl.h
+configure:2403: checking for gettext in libc
+configure:2506: checking for msgfmt
+configure:2540: checking for dcgettext
+configure:2595: checking for gmsgfmt
+configure:2631: checking for xgettext
+configure:2671: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:2970: checking for stdlib.h
+configure:2970: checking for string.h
+configure:2970: checking for strings.h
+configure:2970: checking for unistd.h
+configure:2970: checking for time.h
+configure:3010: checking for sys/time.h
+configure:3010: checking for sys/resource.h
+configure:3050: checking for fcntl.h
+configure:3050: checking for fpu_control.h
+configure:3090: checking for dlfcn.h
+configure:3090: checking for errno.h
+configure:3090: checking for sys/stat.h
+configure:3129: checking for getrusage
+configure:3129: checking for time
+configure:3129: checking for sigaction
+configure:3129: checking for __setfpucw
+configure:3184: checking for bind in -lsocket
+configure:3231: checking for gethostbyname in -lnsl
+configure:3426: checking return type of signal handlers
+configure:3470: checking for executable suffix
+configure:3630: checking whether byte ordering is bigendian
+configure:3779: checking compiler warning flags
+configure:3796: gcc -c -g -O2 -Wimplicit  conftest.c 1>&5
+configure:3796: gcc -c -g -O2 -Wreturn-type  conftest.c 1>&5
+configure:3796: gcc -c -g -O2 -Wcomment  conftest.c 1>&5
+configure:3796: gcc -c -g -O2 -Wtrigraphs  conftest.c 1>&5
+configure:3796: gcc -c -g -O2 -Wformat  conftest.c 1>&5
+configure:3796: gcc -c -g -O2 -Wparentheses  conftest.c 1>&5
+configure:3796: gcc -c -g -O2 -Wpointer-arith  conftest.c 1>&5
+configure:3796: gcc -c -g -O2 -Wuninitialized  conftest.c 1>&5
+configure:4435: checking for X
+configure:4671: checking for string.h
+configure:4671: checking for strings.h
+configure:4671: checking for stdlib.h
+configure:4671: checking for stdlib.h
+configure:4708: checking for fabs in -lm
+configure:4757: checking for aint
+configure:4757: checking for anint
+configure:4757: checking for sqrt

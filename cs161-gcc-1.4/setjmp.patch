@@ -1,0 +1,17 @@
+This patch fixes a code generation bug that caused gcc to spew
+floating point instructions into places where they don't belong.
+
+(Thanks to Melissa O'Neill of Harvey Mudd College for tracking this
+down.)
+
+--- gcc-3.3.2+cs161/gcc/reload1.c~	2003-06-06 22:30:09.000000000 -0700
++++ gcc-3.3.2+cs161/gcc/reload1.c	2004-01-13 21:55:37.000000000 -0800
+@@ -760,7 +760,7 @@
+ 	  && GET_MODE (insn) != VOIDmode)
+ 	PUT_MODE (insn, VOIDmode);
+ 
+-      if (GET_CODE (insn) == CALL_INSN
++      if (0 && GET_CODE (insn) == CALL_INSN
+ 	  && find_reg_note (insn, REG_SETJMP, NULL))
+ 	for (i = 0; i < FIRST_PSEUDO_REGISTER; i++)
+ 	  if (! call_used_regs[i])

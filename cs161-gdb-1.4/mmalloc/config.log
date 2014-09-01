@@ -1,0 +1,23 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:540: checking for gcc
+configure:653: checking whether the C compiler (gcc -g -O2 ) works
+configure:669: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:695: checking whether the C compiler (gcc -g -O2 ) is a cross-compiler
+configure:700: checking whether we are using GNU C
+configure:728: checking whether gcc accepts -g
+configure:790: checking for a BSD compatible install
+configure:849: checking host system type
+configure:870: checking build system type
+configure:896: checking for ar
+configure:928: checking for ranlib
+configure:994: checking how to run the C preprocessor
+configure:1077: checking for unistd.h
+configure:1116: checking for getpagesize
+configure:1169: checking for working mmap
+configure:1343: checking for limits.h
+configure:1343: checking for stddef.h
+configure:1343: checking for unistd.h
+configure:1381: checking whether sbrk must be declared
+configure:1428: checking whether getpagesize must be declared

@@ -1,0 +1,87 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:679: checking how to run the C preprocessor
+configure:759: checking whether make sets ${MAKE}
+configure:786: checking for POSIXized ISC
+configure:807: checking for ANSI C header files
+configure:911: checking for working const
+configure:986: checking for inline
+configure:1026: checking for off_t
+configure:1059: checking for size_t
+configure:1094: checking for working alloca.h
+configure:1127: checking for alloca
+configure:1329: checking for unistd.h
+configure:1368: checking for getpagesize
+configure:1421: checking for working mmap
+configure:1592: checking for Cygwin environment
+configure:1625: checking for mingw32 environment
+configure:1704: checking host system type
+configure:1725: checking target system type
+configure:1743: checking build system type
+configure:1787: checking for gcc
+configure:1900: checking whether the C compiler (gcc -g -O2 ) works
+configure:1916: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1942: checking whether the C compiler (gcc -g -O2 ) is a cross-compiler
+configure:1947: checking whether we are using GNU C
+configure:1975: checking whether gcc accepts -g
+configure:2018: checking for a BSD compatible install
+configure:2086: checking for ranlib
+configure:2121: checking for argz.h
+configure:2121: checking for limits.h
+configure:2121: checking for locale.h
+configure:2121: checking for nl_types.h
+configure:2121: checking for malloc.h
+configure:2121: checking for string.h
+configure:2121: checking for unistd.h
+configure:2121: checking for values.h
+configure:2121: checking for sys/param.h
+configure:2161: checking for getcwd
+configure:2161: checking for munmap
+configure:2161: checking for putenv
+configure:2161: checking for setenv
+configure:2161: checking for setlocale
+configure:2161: checking for strchr
+configure:2161: checking for strcasecmp
+configure:2161: checking for __argz_count
+configure:2161: checking for __argz_stringify
+configure:2161: checking for __argz_next
+configure:2280: checking for LC_MESSAGES
+configure:2313: checking whether NLS is requested
+configure:2333: checking whether included gettext is requested
+configure:2352: checking for libintl.h
+configure:2379: checking for gettext in libc
+configure:2482: checking for msgfmt
+configure:2516: checking for dcgettext
+configure:2571: checking for gmsgfmt
+configure:2607: checking for xgettext
+configure:2647: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:2946: checking for stdlib.h
+configure:2946: checking for string.h
+configure:2946: checking for strings.h
+configure:2946: checking for unistd.h
+configure:2946: checking for time.h
+configure:2986: checking for sys/time.h
+configure:2986: checking for sys/resource.h
+configure:3026: checking for fcntl.h
+configure:3026: checking for fpu_control.h
+configure:3066: checking for dlfcn.h
+configure:3066: checking for errno.h
+configure:3066: checking for sys/stat.h
+configure:3105: checking for getrusage
+configure:3105: checking for time
+configure:3105: checking for sigaction
+configure:3105: checking for __setfpucw
+configure:3160: checking for bind in -lsocket
+configure:3207: checking for gethostbyname in -lnsl
+configure:3402: checking return type of signal handlers
+configure:3446: checking for executable suffix
+configure:3530: checking for stdlib.h
+configure:3530: checking for string.h
+configure:3530: checking for strings.h
+configure:3530: checking for time.h
+configure:3530: checking for sys/times.h
+configure:3530: checking for sys/stat.h
+configure:3530: checking for sys/mman.h
+configure:3569: checking for mmap
+configure:3569: checking for munmap

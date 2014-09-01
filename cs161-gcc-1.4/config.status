@@ -1,0 +1,5 @@
+#!/bin/sh
+# This file was generated automatically by configure.  Do not edit.
+# This directory was configured as follows:
+/root/cs161/cs161-gcc-1.4/./gcc-3.3.2+cs161/configure --with-gcc-version-trigger=/root/cs161/cs161-gcc-1.4/gcc-3.3.2+cs161/gcc/version.c --host=x86_64-unknown-linux-gnu --target=mips-linux --nfp --disable-shared --disable-threads --prefix=/root/cs161/tools --norecursion 
+#  using "mt-frag"

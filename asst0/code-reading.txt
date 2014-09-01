@@ -1,0 +1,107 @@
+1) Which register number is used for the stack pointer (sp) in OS/161? 
+  
+The stack pointer uses register 29
+
+command used: 'grep -r "sp " .'
+
+source: src/kern/arch/mips/include/asmdefs.h - "#define sp  $29    /* stack pointer */"
+
+
+2) What bus/busses does OS/161 support? 
+
+OS/161 only supports LAMEbus for the mips architecture
+
+command used: 'grep -r "support" . | grep "bus"'
+
+source: "/root/cs161/src/kern/arch/mips/include/bus.h" - "* The only bus we support for MIPS is LAMEbus."
+
+
+3) What is the difference between splhigh and spl0? 
+
+spl stands for "set priority level" and manages the priority level of
+interrupts. spl0 sets the interrupt priority to 0, whereas splhigh sets the
+priority level to highest value (traditionally this value is 15), disabling all interrupts.
+
+command used: 'grep -r "spl " . '
+
+source: /src/kern/arch/mips/include/spl.h - 
+
+* Ordinarily there would be a whole bunch of defined spl levels and
+splhigh()    sets spl to the highest value, disabling all interrupts.
+spl0()       sets spl to 0, enabling all interrupts.
+
+4) Why do we use typedefs like u_int32_t instead of simply saying "int"?
+
+Using typedefs allows for more readable and maintainable code. In a case where
+it is necessary to augment a type or change it all together, a typedef allows
+the user to simply redefine the type, and any additions to the type will
+be propigated to other portions of code that use that type. It also provides a
+way to abstract away complex type declarations, or verbose variable names.
+
+5) What does splx return?
+
+splx is a setter function that accepts a new spl as a parameter. upon
+performing logic to set the new spl, the current spl is set to the oldspl and
+oldspl is returned
+
+source: /src/kern/arch/mips/mips/spl.c - "return oldspl;"
+ 
+
+6) What is the highest interrupt level? 
+
+15, based on a macro definition in the spl header file.
+
+source: /src/kern/arch/mips/include/spl.h - #define SPL_HIGH   15
+
+7) How frequently are hardclock interrupts generated?
+
+from clock.h we see that: 
+
+"* hardclock() is called from the timer interrupt HZ times a second."
+
+What is HZ? based on the conditional statement in clock.h, we see that HZ is defined
+as:
+
+"/* hardclocks per second */
+#if OPT_SYNCHPROBS
+/* Make synchronization more exciting :) */
+#define HZ  10000
+#else
+/* More realistic value */
+#define HZ  100
+#endif
+"
+
+The contitional "if OPT_SYNCHPROBS" appears to be 0 (false/not set), but
+according to conf.kern, techically we should build the kernal to make sure
+this value is indeed 0, but based on the documentation it appears that it's
+not being set until later assignments
+
+Therefore, with HZ = 100, the frequency of the hardclock is 100
+interrupts/second
+
+
+8) What functions comprise the standard interface to a VFS device? 
+
+All of the functions defined in the vfs header file - vfs.h
+
+9) How many characters are allowed in a volume name
+
+on file systems that support the concept of a volume name, 32 characters.
+
+command used: grep -r "name" . | grep "length"
+
+source:
+fs.h - "* fs_getvolname may return NULL on filesystem types that don't
+ * support the concept of a volume name."
+
+./kern/sfs.h:#define SFS_VOLNAME_SIZE  32            /* max length of volume
+name */
+
+./kern/sfs.h:	char sp_volname[SFS_VOLNAME_SIZE];  /* Name of this volume */
+
+10) How many direct blocks does a SFS file have?
+
+15
+
+source - #define SFS_NDIRECT       15            /* # of direct blocks in inode */

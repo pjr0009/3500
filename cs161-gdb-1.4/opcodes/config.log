@@ -1,0 +1,102 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:565: checking for Cygwin environment
+configure:598: checking for mingw32 environment
+configure:675: checking host system type
+configure:696: checking target system type
+configure:714: checking build system type
+configure:738: checking for strerror in -lcposix
+configure:797: checking for a BSD compatible install
+configure:850: checking whether build environment is sane
+configure:907: checking whether make sets ${MAKE}
+configure:953: checking for working aclocal
+configure:966: checking for working autoconf
+configure:979: checking for working automake
+configure:992: checking for working autoheader
+configure:1005: checking for working makeinfo
+configure:1028: checking for ar
+configure:1060: checking for ranlib
+configure:1198: checking for gcc
+configure:1311: checking whether the C compiler (gcc -g -O2 ) works
+configure:1327: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:1353: checking whether the C compiler (gcc -g -O2 ) is a cross-compiler
+configure:1358: checking whether we are using GNU C
+configure:1386: checking whether gcc accepts -g
+configure:1429: checking for ld used by GCC
+configure:1497: checking if the linker (ld) is GNU ld
+configure:1514: checking for ld option to reload object files
+configure:1526: checking for BSD-compatible nm
+configure:1564: checking whether ln -s works
+configure:1585: checking how to recognise dependant libraries
+configure:1758: checking for object suffix
+configure:1784: checking for executable suffix
+configure:1821: checking for file
+configure:1954: checking for ranlib
+configure:2021: checking for strip
+ltconfig:678:checking for gcc option to produce PIC
+ltconfig:687:checking that gcc PIC flag  -fPIC -DPIC works.
+ltconfig:749: checking if gcc static flag  works
+ltconfig:780: finding the maximum length of command line arguments
+ltconfig:@lineno@: result: 49153
+ltconfig:887: checking if gcc supports -fno-rtti -fno-exceptions
+ltconfig:888: gcc -c -g -O2 -fno-rtti -fno-exceptions -c conftest.c  conftest.c 1>&5
+ltconfig:1431: checking if global_symbol_pipe works
+ltconfig:1432: gcc -c -g -O2  conftest.c 1>&5
+ltconfig:1435: eval "nm conftest.o | sed -n -e 's/^.*[ 	]\([ABCDGISTW][ABCDGISTW]*\)[ 	][ 	]*\(\)\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2\3 \3/p' > conftest.nm"
+ltconfig:1487: gcc -o conftest -g -O2 -fno-builtin   conftest.c conftstm.o 1>&5
+configure:2360: checking whether to enable maintainer-specific portions of Makefiles
+configure:2383: checking whether to install libbfd
+configure:2420: checking for executable suffix
+configure:2456: checking for gcc
+configure:2569: checking whether the C compiler (gcc -g -O2 ) works
+configure:2585: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:2611: checking whether the C compiler (gcc -g -O2 ) is a cross-compiler
+configure:2616: checking whether we are using GNU C
+configure:2644: checking whether gcc accepts -g
+configure:2678: checking how to run the C preprocessor
+configure:2760: checking for ranlib
+configure:2788: checking for ANSI C header files
+configure:2892: checking for working const
+configure:2967: checking for inline
+configure:3007: checking for off_t
+configure:3040: checking for size_t
+configure:3075: checking for working alloca.h
+configure:3108: checking for alloca
+configure:3310: checking for unistd.h
+configure:3349: checking for getpagesize
+configure:3402: checking for working mmap
+configure:3578: checking for argz.h
+configure:3578: checking for limits.h
+configure:3578: checking for locale.h
+configure:3578: checking for nl_types.h
+configure:3578: checking for malloc.h
+configure:3578: checking for string.h
+configure:3578: checking for unistd.h
+configure:3578: checking for values.h
+configure:3578: checking for sys/param.h
+configure:3618: checking for getcwd
+configure:3618: checking for munmap
+configure:3618: checking for putenv
+configure:3618: checking for setenv
+configure:3618: checking for setlocale
+configure:3618: checking for strchr
+configure:3618: checking for strcasecmp
+configure:3618: checking for __argz_count
+configure:3618: checking for __argz_stringify
+configure:3618: checking for __argz_next
+configure:3737: checking for LC_MESSAGES
+configure:3770: checking whether NLS is requested
+configure:3790: checking whether included gettext is requested
+configure:3809: checking for libintl.h
+configure:3836: checking for gettext in libc
+configure:3939: checking for msgfmt
+configure:3973: checking for dcgettext
+configure:4028: checking for gmsgfmt
+configure:4064: checking for xgettext
+configure:4104: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:4296: checking for catalogs to be installed
+configure:4449: checking for a BSD compatible install
+configure:4506: checking for string.h
+configure:4506: checking for strings.h
+configure:4506: checking for stdlib.h

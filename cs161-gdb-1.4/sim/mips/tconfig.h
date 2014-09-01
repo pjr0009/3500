@@ -1,0 +1,1 @@
+/root/cs161/cs161-gdb-1.4/./gdb-6.0+cs161/sim/mips/tconfig.in

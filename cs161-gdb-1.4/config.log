@@ -1,0 +1,30 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:581: checking host system type
+configure:602: checking target system type
+configure:620: checking build system type
+configure:2697: checking for x86_64-unknown-linux-gnu-ar
+configure:2769: checking for x86_64-unknown-linux-gnu-as
+configure:2802: checking for as
+configure:2841: checking for x86_64-unknown-linux-gnu-dlltool
+configure:2874: checking for dlltool
+configure:2913: checking for x86_64-unknown-linux-gnu-ld
+configure:2946: checking for ld
+configure:2985: checking for x86_64-unknown-linux-gnu-nm
+configure:3018: checking for nm
+configure:3057: checking for x86_64-unknown-linux-gnu-ranlib
+configure:3129: checking for x86_64-unknown-linux-gnu-windres
+configure:3162: checking for windres
+configure:3201: checking for x86_64-unknown-linux-gnu-objcopy
+configure:3234: checking for objcopy
+configure:3273: checking for x86_64-unknown-linux-gnu-objdump
+configure:3306: checking for objdump
+configure:3354: checking for mips-elf-ar
+configure:3426: checking for mips-elf-as
+configure:3498: checking for mips-elf-dlltool
+configure:3570: checking for mips-elf-ld
+configure:3642: checking for mips-elf-nm
+configure:3714: checking for mips-elf-ranlib
+configure:3786: checking for mips-elf-windres
+configure:3886: checking whether to enable maintainer-specific portions of Makefiles
