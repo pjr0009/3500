@@ -128,7 +128,7 @@ tooldir = $(exec_prefix)/$(target_alias)
 CC_FOR_BUILD = gcc
 EXEEXT_FOR_BUILD = $(EXEEXT)
 
-YACC = `if [ -f ../bison/bison ]; then echo ../bison/bison -y -L$(srcdir)/../bison/; else echo yacc; fi`
+YACC = `if [ -f ../bison/bison ]; then echo ../bison/bison -y -L$(srcdir)/../bison/; else echo byacc; fi`
 YFLAGS = -d
 LEX = `if [ -f ../flex/flex ]; then echo ../flex/flex; else echo /root/cs161/cs161-binutils-1.4/binutils-2.14/missing flex; fi`
 

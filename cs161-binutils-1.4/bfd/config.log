@@ -7,20 +7,6 @@ configure:677: checking host system type
 configure:698: checking target system type
 configure:716: checking build system type
 configure:740: checking for strerror in -lcposix
-configure:759: gcc -o conftest -g -O2   conftest.c -lcposix   1>&5
-/usr/bin/ld: cannot find -lcposix
-collect2: ld returned 1 exit status
-configure: failed program was:
-#line 748 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char strerror();
-
-int main() {
-strerror()
-; return 0; }
 configure:794: checking for a BSD compatible install
 configure:847: checking whether build environment is sane
 configure:904: checking whether make sets ${MAKE}
@@ -112,7 +98,6 @@ configure:4139: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4331: checking for catalogs to be installed
 configure:4447: checking for a BSD compatible install
 configure:4558: checking for stddef.h
-configure:4568: gcc -E  conftest.c >/dev/null 2>conftest.out
 configure:4558: checking for string.h
 configure:4558: checking for strings.h
 configure:4558: checking for stdlib.h
@@ -123,49 +108,22 @@ configure:4598: checking for sys/file.h
 configure:4598: checking for sys/time.h
 configure:4635: checking whether time.h and sys/time.h may both be included
 configure:4674: checking for dirent.h that defines DIR
-configure:4687: gcc -c -g -O2  conftest.c 1>&5
 configure:4712: checking for opendir in -ldir
-configure:4731: gcc -o conftest -g -O2   conftest.c -ldir   1>&5
-/usr/bin/ld: cannot find -ldir
-collect2: ld returned 1 exit status
-configure: failed program was:
-#line 4720 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char opendir();
-
-int main() {
-opendir()
-; return 0; }
 configure:4797: checking for fcntl
-configure:4825: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4797: checking for getpagesize
 configure:4797: checking for setitimer
-configure:4825: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4797: checking for sysconf
 configure:4797: checking for fdopen
-configure:4825: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4797: checking for getuid
-configure:4825: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4797: checking for getgid
-configure:4825: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4860: checking whether strstr must be declared
-configure:4886: gcc -c -g -O2  conftest.c 1>&5
 configure:4907: checking whether malloc must be declared
-configure:4933: gcc -c -g -O2  conftest.c 1>&5
 configure:4954: checking whether realloc must be declared
-configure:4980: gcc -c -g -O2  conftest.c 1>&5
 configure:5001: checking whether free must be declared
-configure:5027: gcc -c -g -O2  conftest.c 1>&5
 configure:5048: checking whether getenv must be declared
-configure:5074: gcc -c -g -O2  conftest.c 1>&5
 configure:6400: checking for gcc version with buggy 64-bit support
 configure:6449: checking for unistd.h
 configure:6488: checking for getpagesize
 configure:6541: checking for working mmap
 configure:6714: checking for madvise
-configure:6742: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:6714: checking for mprotect
-configure:6742: gcc -o conftest -g -O2   conftest.c  1>&5

@@ -171,7 +171,7 @@ USUAL_BISON = `if [ -f $$r/bison/bison ] ; then \
 	    echo bison ; \
 	 fi`
 
-DEFAULT_YACC = 
+DEFAULT_YACC = byacc
 YACC=$(USUAL_YACC)
 USUAL_YACC = `if [ -f $$r/bison/bison ] ; then \
 	    echo $$r/bison/bison -y -L $$s/bison/ ; \

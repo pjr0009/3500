@@ -2,7 +2,7 @@
 # Generated automatically by configure.
 # Run this file to recreate the current configuration.
 # This directory was configured as follows,
-# on host localhost.localdomain:
+# on host comp:
 #
 # /root/cs161/cs161-binutils-1.4/./binutils-2.14/configure  --target=mips-linux --nfp --prefix=/root/cs161/tools
 #
@@ -141,7 +141,7 @@ s%@OBJDUMP@%objdump%g
 s%@ncn_cv_OBJDUMP@%objdump%g
 s%@CC@%gcc%g
 s%@CXX@%c++%g
-s%@DEFAULT_YACC@%%g
+s%@DEFAULT_YACC@%byacc%g
 s%@DEFAULT_LEX@%%g
 s%@DEFAULT_M4@%m4%g
 s%@AR_FOR_TARGET@%$(USUAL_AR_FOR_TARGET)%g

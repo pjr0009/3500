@@ -53,36 +53,10 @@ configure:2481: checking for bison
 configure:2481: checking for byacc
 configure:2512: checking how to run the C preprocessor
 configure:2597: checking for flex
-configure:2597: checking for lex
 configure:2630: checking for flex
 configure:2664: checking for yywrap in -ll
-configure:2683: gcc -o conftest -g -O2   conftest.c -ll   1>&5
-/usr/bin/ld: cannot find -ll
-collect2: ld returned 1 exit status
-configure: failed program was:
-#line 2672 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char yywrap();
-
-int main() {
-yywrap()
-; return 0; }
 configure:2706: checking lex output file root
 configure:2727: checking whether yytext is a pointer
-configure:2746: gcc -o conftest -g -O2   conftest.c   1>&5
-configure:2742: error: redefinition of 'main'
-configure:2740: note: previous definition of 'main' was here
-configure: failed program was:
-#line 2739 "configure"
-#include "confdefs.h"
-main() { return 0; }
-extern char *yytext;
-int main() {
-
-; return 0; }
 configure:2772: checking for ranlib
 configure:2800: checking for ANSI C header files
 configure:2904: checking for working const
@@ -139,82 +113,16 @@ configure:4709: checking for working alloca.h
 configure:4742: checking for alloca
 configure:4943: checking for sbrk
 configure:4943: checking for utimes
-configure:4971: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4943: checking for setmode
-configure:4971: gcc -o conftest -g -O2   conftest.c  1>&5
-/tmp/ccNJFILT.o: In function `main':
-/root/cs161/cs161-binutils-1.4/binutils/configure:4965: undefined reference to `setmode'
-collect2: ld returned 1 exit status
-configure: failed program was:
-#line 4948 "configure"
-#include "confdefs.h"
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char setmode(); below.  */
-#include <assert.h>
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char setmode();
-
-int main() {
-
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined (__stub_setmode) || defined (__stub___setmode)
-choke me
-#else
-setmode();
-#endif
-
-; return 0; }
 configure:4943: checking for getc_unlocked
-configure:4971: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4943: checking for strcoll
-configure:4971: gcc -o conftest -g -O2   conftest.c  1>&5
 configure:4999: checking for fopen64
-configure:5011: gcc -o conftest -g -O2   conftest.c  1>&5
-configure: In function 'main':
-configure:5007: warning: initialization makes pointer from integer without a cast
 configure:5060: checking for library containing frexp
-configure:5078: gcc -o conftest -g -O2   conftest.c  1>&5
-configure:5071: warning: conflicting types for built-in function 'frexp'
 configure:5122: checking for time_t in time.h
-configure:5134: gcc -c -g -O2  conftest.c 1>&5
 configure:5155: checking for time_t in sys/types.h
-configure:5167: gcc -c -g -O2  conftest.c 1>&5
 configure:5190: checking for utime.h
-configure:5206: gcc -c -g -O2  conftest.c 1>&5
 configure:5227: checking whether fprintf must be declared
-configure:5253: gcc -c -g -O2  conftest.c 1>&5
 configure:5274: checking whether strstr must be declared
 configure:5321: checking whether sbrk must be declared
-configure:5347: gcc -c -g -O2  conftest.c 1>&5
 configure:5368: checking whether getenv must be declared
 configure:5415: checking whether environ must be declared
-configure:5441: gcc -c -g -O2  conftest.c 1>&5
-configure: In function 'main':
-configure:5437: error: 'environ' undeclared (first use in this function)
-configure:5437: error: (Each undeclared identifier is reported only once
-configure:5437: error: for each function it appears in.)
-configure: failed program was:
-#line 5420 "configure"
-#include "confdefs.h"
-
-#include <stdio.h>
-#ifdef HAVE_STRING_H
-#include <string.h>
-#else
-#ifdef HAVE_STRINGS_H
-#include <strings.h>
-#endif
-#endif
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
-#endif
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-int main() {
-char *(*pfn) = (char *(*)) environ
-; return 0; }

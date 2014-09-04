@@ -121,7 +121,7 @@ SUBDIRS = doc po
 
 tooldir = $(exec_prefix)/$(target_alias)
 
-YACC = `if [ -f ../bison/bison ] ; then echo ../bison/bison -y -L../bison/bison ; else echo yacc ; fi`
+YACC = `if [ -f ../bison/bison ] ; then echo ../bison/bison -y -L../bison/bison ; else echo byacc ; fi`
 LEX = `if [ -f ../flex/flex ] ; then echo ../flex/flex ; else echo /root/cs161/cs161-binutils-1.4/binutils-2.14/missing flex ; fi`
 
 WARN_CFLAGS = -W -Wall -Wstrict-prototypes -Wmissing-prototypes

@@ -5,7 +5,6 @@ configure:581: checking host system type
 configure:602: checking target system type
 configure:620: checking build system type
 configure:2683: checking for x86_64-unknown-linux-gnu-ar
-configure:2716: checking for ar
 configure:2755: checking for x86_64-unknown-linux-gnu-as
 configure:2788: checking for as
 configure:2827: checking for x86_64-unknown-linux-gnu-dlltool
@@ -15,7 +14,6 @@ configure:2932: checking for ld
 configure:2971: checking for x86_64-unknown-linux-gnu-nm
 configure:3004: checking for nm
 configure:3043: checking for x86_64-unknown-linux-gnu-ranlib
-configure:3076: checking for ranlib
 configure:3115: checking for x86_64-unknown-linux-gnu-windres
 configure:3148: checking for windres
 configure:3187: checking for x86_64-unknown-linux-gnu-objcopy

@@ -23,8 +23,15 @@ Programming
 * Cpp: (cpp).                   The GNU C preprocessor.
 * Cpplib: (cppinternals).       Cpplib internals.
 * gcc: (gcc).                   The GNU Compiler Collection.
+* gccinstall: (gccinstall).     Installing the GNU Compiler Collection.
 * gccint: (gccint).             Internals of the GNU Compiler Collection.
 
 Programming & development tools.
 * Gdb: (gdb).                   The GNU debugger.
 * Gdb-Internals: (gdbint).      The GNU debugger's internals.
+
+Software development
+* Annotate: (annotate).         The obsolete annotation interface.
+* Gdb: (gdb).                   The GNU debugger.
+* Gdb-Internals: (gdbint).      The GNU debugger's internals.
+* Stabs: (stabs).               The "stabs" debugging information format.

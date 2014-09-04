@@ -2,7 +2,7 @@
 # Generated automatically by configure.
 # Run this file to recreate the current configuration.
 # This directory was configured as follows,
-# on host localhost.localdomain:
+# on host comp:
 #
 # /root/cs161/cs161-binutils-1.4/binutils-2.14/binutils/configure  --cache-file=.././config.cache --build=x86_64-unknown-linux-gnu --host=x86_64-unknown-linux-gnu --target=mips-linux --with-gnu-as --with-gnu-ld --with-stabs --nfp --prefix=/root/cs161/tools --srcdir=/root/cs161/cs161-binutils-1.4/./binutils-2.14/binutils
 #
@@ -92,7 +92,7 @@ s%@RANLIB@%ranlib%g
 s%@STRIP@%strip%g
 s%@LIBTOOL@%$(SHELL) $(top_builddir)/libtool%g
 s%@WARN_CFLAGS@%-W -Wall -Wstrict-prototypes -Wmissing-prototypes%g
-s%@YACC@%yacc%g
+s%@YACC@%byacc%g
 s%@LEX@%/root/cs161/cs161-binutils-1.4/binutils-2.14/missing flex%g
 s%@LEXLIB@%%g
 s%@CPP@%gcc -E%g

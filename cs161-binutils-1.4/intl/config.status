@@ -2,7 +2,7 @@
 # Generated automatically by configure.
 # Run this file to recreate the current configuration.
 # This directory was configured as follows,
-# on host localhost.localdomain:
+# on host comp:
 #
 # /root/cs161/cs161-binutils-1.4/binutils-2.14/intl/configure  --cache-file=.././config.cache --build=x86_64-unknown-linux-gnu --host=x86_64-unknown-linux-gnu --target=mips-linux --with-gnu-as --with-gnu-ld --with-stabs --nfp --prefix=/root/cs161/tools --srcdir=/root/cs161/cs161-binutils-1.4/./binutils-2.14/intl
 #
@@ -328,21 +328,18 @@ ${ac_eA}HAVE___ARGZ_NEXT${ac_eB}HAVE___ARGZ_NEXT${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_STPCPY${ac_dB}HAVE_STPCPY${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_STPCPY${ac_uB}HAVE_STPCPY${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_STPCPY${ac_eB}HAVE_STPCPY${ac_eC}1${ac_eD}
-${ac_dA}HAVE_STPCPY${ac_dB}HAVE_STPCPY${ac_dC}1${ac_dD}
-${ac_uA}HAVE_STPCPY${ac_uB}HAVE_STPCPY${ac_uC}1${ac_uD}
-${ac_eA}HAVE_STPCPY${ac_eB}HAVE_STPCPY${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_LC_MESSAGES${ac_dB}HAVE_LC_MESSAGES${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_LC_MESSAGES${ac_uB}HAVE_LC_MESSAGES${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_LC_MESSAGES${ac_eB}HAVE_LC_MESSAGES${ac_eC}1${ac_eD}
+${ac_dA}ENABLE_NLS${ac_dB}ENABLE_NLS${ac_dC}1${ac_dD}
+${ac_uA}ENABLE_NLS${ac_uB}ENABLE_NLS${ac_uC}1${ac_uD}
+${ac_eA}ENABLE_NLS${ac_eB}ENABLE_NLS${ac_eC}1${ac_eD}
 CEOF
   sed -f conftest.frag conftest.in > conftest.out
   rm -f conftest.in
   mv conftest.out conftest.in
 
   cat > conftest.frag <<CEOF
-${ac_dA}ENABLE_NLS${ac_dB}ENABLE_NLS${ac_dC}1${ac_dD}
-${ac_uA}ENABLE_NLS${ac_uB}ENABLE_NLS${ac_uC}1${ac_uD}
-${ac_eA}ENABLE_NLS${ac_eB}ENABLE_NLS${ac_eC}1${ac_eD}
 ${ac_dA}HAVE_GETTEXT${ac_dB}HAVE_GETTEXT${ac_dC}1${ac_dD}
 ${ac_uA}HAVE_GETTEXT${ac_uB}HAVE_GETTEXT${ac_uC}1${ac_uD}
 ${ac_eA}HAVE_GETTEXT${ac_eB}HAVE_GETTEXT${ac_eC}1${ac_eD}
