@@ -1,7 +1,6 @@
 /*
  * Main.
  */
-
 #include <types.h>
 #include <kern/errno.h>
 #include <kern/unistd.h>
@@ -16,6 +15,11 @@
 #include <vm.h>
 #include <syscall.h>
 #include <version.h>
+
+/*
+ * Phillip Robertson & Grace Wang
+*/
+
 
 /*
  * These two pieces of data are maintained by the makefiles and build system.
@@ -159,7 +163,7 @@ int
 kmain(char *arguments)
 {
 	boot();
-
+	hello();
 	menu(arguments);
 
 	/* Should not get here */

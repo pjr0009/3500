@@ -98,10 +98,133 @@ fs.h - "* fs_getvolname may return NULL on filesystem types that don't
 ./kern/sfs.h:#define SFS_VOLNAME_SIZE  32            /* max length of volume
 name */
 
-./kern/sfs.h:	char sp_volname[SFS_VOLNAME_SIZE];  /* Name of this volume */
 
 10) How many direct blocks does a SFS file have?
 
 15
 
 source - #define SFS_NDIRECT       15            /* # of direct blocks in inode */
+
+
+11)  What is the standard interface to a file system (i.e., what functions must you implement to implement a new file system)?
+
+fs_sync, fs_getvolumename, fs_getroot, fs_unmount, fs_data.
+
+source - fs.h: 
+
+struct fs {
+        int           (*fs_sync)(struct fs *);
+        const char   *(*fs_getvolname)(struct fs *);
+        struct vnode *(*fs_getroot)(struct fs *);
+        int           (*fs_unmount)(struct fs *);
+
+        void *fs_data;
+};
+
+12) What function puts a thread to sleep?
+
+#thread_sleep
+
+source - thread.h: 
+
+ * go to sleep until wakeup() is called on the same address. The
+ * address is treated as a key and is not interpreted or dereferenced.
+ * Interrupts must be disabled.
+ */
+void thread_sleep(const void *addr);
+
+
+13) How large are OS/161 pids?
+
+os/161 pid's are 32-bit unsigned integers
+
+source - kern/types.h:
+
+typedef int32_t pid_t;   /* Process ID */
+
+
+14) What operations can you do on a vnode
+
+command used - first grep for "operations", inspect vnode.h, then format using "grep -r " *    vop_" vnode.h"
+
+source - vnode.h
+
+ *    vop_open        - Called on *each* open() of a file. Can be used to
+ *    vop_close       - To be called on *last* close() of a file.
+ *    vop_reclaim     - Called when vnode is no longer in use. Note that
+ *    vop_read        - Read data from file to uio, at offset specified
+ *    vop_readlink    - Read the contents of a symlink into a uio.
+ *    vop_getdirentry - Read a single filename from a directory into a
+ *    vop_write       - Write data from uio to file at offset specified
+ *    vop_ioctl       - Perform ioctl operation OP on file using data
+ *    vop_stat        - Return info about a file. The pointer is a
+ *    vop_gettype     - Return type of file. The values for file types
+ *    vop_tryseek     - Check if seeking to the specified position within
+ *    vop_fsync       - Force any dirty buffers associated with this file
+ *    vop_mmap        - Map file into memory. If you implement this
+ *    vop_truncate    - Forcibly set size of file to the length passed
+ *    vop_namefile    - Compute pathname relative to filesystem root
+ *    vop_creat       - Create a regular file named NAME in the passed
+ *    vop_symlink     - Create symlink named NAME in the passed directory,
+ *    vop_mkdir       - Make directory NAME in the passed directory PARENTDIR.
+ *    vop_link        - Create hard link, with name NAME, to file FILE
+ *    vop_remove      - Delete non-directory object NAME from passed
+ *    vop_rmdir       - Delete directory object NAME from passed
+ *    vop_rename      - Rename file NAME1 in directory VN1 to be
+ *    vop_lookup      - Parse PATHNAME relative to the passed directory
+ *    vop_lookparent  - Parse PATHNAME relative to the passed directory
+
+15. What is the maximum path length in OS/161?
+
+1024
+
+command used: grep -r "path" .
+
+source: - kern/limits.h: 
+
+/* Longest full path name */
+#define PATH_MAX   1024
+
+16) What is the system call number for a reboot?
+
+8 
+
+command used: grep -r "reboot" .
+
+source: kern/callno.h - "#define SYS_reboot       8"
+
+17) Where is STDIN_FILENO defined?
+
+./kern/unistd.h:#define STDIN_FILENO  0      /* Standard input */
+
+command used: grep -r "#define STDIN_FILENO" 
+
+18) Is it OK to initialize the thread system before the scheduler? Why or why
+not?
+
+19) What is a zombie?
+
+Zombies are threads/processes that have exited but not yet been fully deleted
+
+command used: grep -r "zombie" .
+source: thread.c -
+/*
+ * Remove zombies. (Zombies are threads/processes that have exited but not
+ * been fully deleted yet.)
+ */
+
+20) How large is the initial run queue?
+
+32
+
+source: scheduler.c - "runqueue = q_create(32);"
+
+21. What does a device name in OS/161 look like?
+
+
+22. What does a raw device name in OS/161 look like?
+
+23. What lock protects the vnode reference count?
+
+24. What device types are currently supported?
+
