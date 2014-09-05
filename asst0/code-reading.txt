@@ -218,3 +218,13 @@ source: thread.c -
 32
 
 source: scheduler.c - "runqueue = q_create(32);"
+
+21. What does a device name in OS/161 look like?
+
+
+22. What does a raw device name in OS/161 look like?
+
+23. What lock protects the vnode reference count?
+
+24. What device types are currently supported?
+
