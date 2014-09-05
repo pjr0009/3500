@@ -185,17 +185,36 @@ source: - kern/limits.h:
 /* Longest full path name */
 #define PATH_MAX   1024
 
-16. What is the system call number for a reboot?
+16) What is the system call number for a reboot?
 
 8 
+
 command used: grep -r "reboot" .
 
-source: kern/callno.h
+source: kern/callno.h - "#define SYS_reboot       8"
 
-#define SYS_reboot       8
-
-17. Where is STDIN_FILENO defined?
+17) Where is STDIN_FILENO defined?
 
 ./kern/unistd.h:#define STDIN_FILENO  0      /* Standard input */
 
-command used: grep -r "#define STDIN_FILENO"  
+command used: grep -r "#define STDIN_FILENO" 
+
+18) Is it OK to initialize the thread system before the scheduler? Why or why
+not?
+
+19) What is a zombie?
+
+Zombies are threads/processes that have exited but not yet been fully deleted
+
+command used: grep -r "zombie" .
+source: thread.c -
+/*
+ * Remove zombies. (Zombies are threads/processes that have exited but not
+ * been fully deleted yet.)
+ */
+
+20) How large is the initial run queue?
+
+32
+
+source: scheduler.c - "runqueue = q_create(32);"
