@@ -1,7 +1,6 @@
 /*
  * Main.
  */
-
 #include <types.h>
 #include <kern/errno.h>
 #include <kern/unistd.h>
@@ -159,7 +158,7 @@ int
 kmain(char *arguments)
 {
 	boot();
-
+	hello();
 	menu(arguments);
 
 	/* Should not get here */
