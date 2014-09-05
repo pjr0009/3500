@@ -17,6 +17,11 @@
 #include <version.h>
 
 /*
+ * Phillip Robertson & Grace Wang
+*/
+
+
+/*
  * These two pieces of data are maintained by the makefiles and build system.
  * buildconfig is the name of the config file the kernel was configured with.
  * buildversion starts at 1 and is incremented every time you link a kernel. 
