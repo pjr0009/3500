@@ -1,0 +1,45 @@
+4.1 Thread Questions
+
+What happens to a thread when it exits (i.e., calls thread_exit() )? What about when it sleeps?
+thread_exit() causes the thread to exit. It first checks that the thread's
+stack has not overflown by checking the magic number at the bottom of the
+stack. Then it blocks all interrupts, Deallocates the virtual machine memory
+space, decrements the reference count to the file it was using (if the thread
+has a non null t_cwd member). After that we call mi_switch, which takes an
+enum type speficying the type of current thread (in this case zombie - meaning
+the thread is ready to exit). mi_switch changes the type of the current thread
+to zombie and adds it to the zombies array of threads.
+
+thread_sleep() requires interrupts to be turned off, and that the thread is
+not currently in an interupt handler. once we check that we're not in an
+interrupt, we call the function to switch the thread (just like with
+thread_exit, except with the sleep enum type) and put the current thread to
+sleep at a memory address which may be used to locate the thread for wakeup 
+
+What function(s) handle(s) a context switch?
+mi_switch
+
+How many thread states are there? What are they?
+inspecting the list of types called "threadstate_t", there is: "run", "ready",
+"zombie", and "sleep".
+What does it mean to turn interrupts off? How is this accomplished? Why is it important to turn off interrupts in the thread subsystem code?
+Turning off interrupts means that the current thread of execution can not be
+inturrupted by any interupts. Interupting a process may lead to race
+conditions because if you are in a critical section of process A and are
+interupted, there is not a guarantee of mutual exclusion. This is
+accomplished by setting the priority level of the process to the highest
+value, which ensures it may not be interupted.
+
+What happens when a thread wakes up another thread? How does a sleeping thread get to run again?
+A sleeping thread is only run again when the wake up function is called with
+the memory address of the sleeping thread. 
+
+
+4.2 Scheduler Questions
+What function is responsible for choosing the next thread to run?
+How does that function pick the next thread?
+What role does the hardware timer play in scheduling? What hardware independent function is called on a timer interrupt?
+
+4.3 Synchronization Questions
+Describe how thread_sleep() and thread_wakeup() are used to implement semaphores. What is the purpose of the argument passed to thread_sleep()?
+Why does the lock API in OS/161 provide lock_do_i_hold(), but not lock_get_holder()?

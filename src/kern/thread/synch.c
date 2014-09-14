@@ -113,7 +113,7 @@ lock_create(const char *name)
 	}
 	
 	// add stuff here as needed
-	
+	lock -> value = 0; //set the resource as locked initially because why create lock if no one needs it
 	return lock;
 }
 
@@ -131,16 +131,26 @@ lock_destroy(struct lock *lock)
 void
 lock_acquire(struct lock *lock)
 {
-	// Write this
+	int value = lock-> value;
+	if(value == zero){
+	  //lock isn't free?
+	}
+	else{
+	  lock->value=one;
+	}
 
 	(void)lock;  // suppress warning until code gets written
 }
 
 void
 lock_release(struct lock *lock)
-{
-	// Write this
-
+{	
+	
+	if(lock->value == one){
+	}
+	else{
+	  lock->value=zero;
+	}
 	(void)lock;  // suppress warning until code gets written
 }
 
