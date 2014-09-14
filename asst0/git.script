@@ -1,110 +1,0 @@
-Script started on Fri 05 Sep 2014 07:46:39 PM EDT
-]0;root@comp:~/cs161[?1034h[root@comp cs161]# cd /r[Kke[K[Ksrv/ke[K[K[K[Kc[K[K[K[Ksrc/kern/ro[K[Kmain/
-]0;root@comp:~/cs161/src/kern/main[root@comp main]# vim main.c 
-[?1049h[?1h=[1;40r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[40;1H"main.c" 166L, 3541C[>c[1;1H[34m/*
- * Main.
- */[m
-[35m#include [m[31m<types.h>[m
-[35m#include [m[31m<kern/errno.h>[m
-[35m#include [m[31m<kern/unistd.h>[m
-[35m#include [m[31m<lib.h>[m
-[35m#include [m[31m<machine/spl.h>[m
-[35m#include [m[31m<test.h>[m
-[35m#include [m[31m<synch.h>[m
-[35m#include [m[31m<thread.h>[m
-[35m#include [m[31m<scheduler.h>[m
-[35m#include [m[31m<dev.h>[m
-[35m#include [m[31m<vfs.h>[m
-[35m#include [m[31m<vm.h>[m
-[35m#include [m[31m<syscall.h>[m
-[35m#include [m[31m<version.h>[m
-
-[34m/*
- * These two pieces of data are maintained by the makefiles and build system.
- * buildconfig is the name of the config file the kernel was configured with.
- * buildversion starts at 1 and is incremented every time you link a kernel. 
- *
- * The purpose is not to show off how many kernels you've linked, but
- * to make it easy to make sure that the kernel you just booted is the
- * same one you just built.
- */[m
-[32mextern[m [32mconst[m [32mint[m buildversion;
-[32mextern[m [32mconst[m [32mchar[m buildconfig[];
-
-[34m/*
- * Copyright message for the OS/161 base code.
- */[m
-[32mstatic[m [32mconst[m [32mchar[m harvard_copyright[] =
-    [31m"Copyright (c) 2000, 2001, 2002, 2003[m[35m\n[m[31m"[m
-    [31m"   President and Fellows of Harvard College.  All rights reserved.[m[35m\n[m[31m"[m;
-
-
-[34m/*[m[40;155H21,2[10CTop[21;2H[?12l[?25h[?25l[40;156H0[20;2H[?12l[?25h[?25l[40;155H19[19;2H[?12l[?25h[?25l[40;156H8,0-1[18;1H[?12l[?25h[?25l[40;156H7,2  [17;2H[?12l[?25h[?25l[40;1H[1m-- INSERT --[m[40;13H[K[40;155H17,2[10CTop[17;2H[?12l[?25h[?25l[40;156H8,1[18;1H[?12l[?25h[?25l[19;39r[19;1H[L[1;40r[40;155H[K[40;155H19,1[10CTop[19;1H[?12l[?25h[?25l[20;39r[20;1H[L[1;40r[40;155H[K[40;155H20,1[10CTop[20;1H[?12l[?25h[?25l[21;39r[21;1H[L[1;40r[40;155H[K[40;155H21,1[10CTop[21;1H[?12l[?25h[?25l[40;156H0[20;1H[?12l[?25h[?25l[40;155H19[19;1H[?12l[?25h[?25l/[40;158H2[19;2H[?12l[?25h[?25l[34m/*[m
-
-
-[97m[101m/[m[40;158H3[19;3H[?12l[?25h[?25l[20;39r[20;1H[L[1;40r[20;1H[34m * [m[40;155H[K[40;155H20,4[10CTop[20;4H[?12l[?25h[?25l[34m P[m[40;158H5[20;5H[?12l[?25h[?25l[34mPh[m[40;158H6[20;6H[?12l[?25h[?25l[34mhi[m[40;158H7[20;7H[?12l[?25h[?25l[34mil[m[40;158H8[20;8H[?12l[?25h[?25l[34mll[m[40;158H9[20;9H[?12l[?25h[?25l[34mli[m[40;158H10[20;10H[?12l[?25h[?25l[34mip[m[40;159H1[20;11H[?12l[?25h[?25l[34m [m[40;159H2[20;12H[?12l[?25h[?25l[34m R[m[40;159H3[20;13H[?12l[?25h[?25l[34mRO[m[40;159H4[20;14H[?12l[?25h[?25l[34mOb[m[40;159H5[20;15H[?12l[?25h[?25l[34mbe[m[40;159H6[20;16H[?12l[?25h[?25l[34mer[m[40;159H7[20;17H[?12l[?25h[?25l[20;16H[K[40;159H6[20;16H[?12l[?25h[?25l[20;15H[K[40;159H5[20;15H[?12l[?25h[?25l[20;14H[K[40;159H4[20;14H[?12l[?25h[?25l[20;13H[K[40;159H3[20;13H[?12l[?25h[?25l[34mRo[m[40;159H4[20;14H[?12l[?25h[?25l[34mob[m[40;159H5[20;15H[?12l[?25h[?25l[34mbe[m[40;159H6[20;16H[?12l[?25h[?25l[34mer[m[40;159H7[20;17H[?12l[?25h[?25l[34mrt[m[40;159H8[20;18H[?12l[?25h[?25l[34mts[m[40;159H9[20;19H[?12l[?25h[?25l[34mso[m[40;158H20[20;20H[?12l[?25h[?25l[34mon[m[40;159H1[20;21H[?12l[?25h[?25l[34m [m[40;159H2[20;22H[?12l[?25h[?25l[34m &[m[40;159H3[20;23H[?12l[?25h[?25l[34m [m[40;159H4[20;24H[?12l[?25h[?25l[34m g[m[40;159H5[20;25H[?12l[?25h[?25l[20;24H[K[40;159H4[20;24H[?12l[?25h[?25l[34m G[m[40;159H5[20;25H[?12l[?25h[?25l[34mGr[m[40;159H6[20;26H[?12l[?25h[?25l[34mra[m[40;159H7[20;27H[?12l[?25h[?25l[34mac[m[40;159H8[20;28H[?12l[?25h[?25l[34mce[m[40;159H9[20;29H[?12l[?25h[?25l[34m [m[40;158H30[20;30H[?12l[?25h[?25l[34m W[m[40;159H1[20;31H[?12l[?25h[?25l[34mWa[m[40;159H2[20;32H[?12l[?25h[?25l[34man[m[40;159H3[20;33H[?12l[?25h[?25l[34mng[m[40;159H4[20;34H[?12l[?25h[?25l[21;39r[21;1H[L[1;40r[21;1H[34m * [m[40;155H[K[40;155H21,4[10CTop[21;4H[?12l[?25h[?25l[34m ?[m[40;158H5[21;5H[?12l[?25h[?25l[40;158H4[21;4H[?12l[?25h[?25l[40;158H5[21;5H[?12l[?25h[?25l[21;4H[K[40;158H4[21;4H[?12l[?25h[?25l[34m /[m[40;158H5[21;5H[?12l[?25h[?25l[40;158H4[21;4H[?12l[?25h[?25l[40;158H3[21;3H[?12l[?25h[?25l[40;158H2[21;2H[?12l[?25h[?25l[34m* /[m[21;4H[K[40;158H1[21;1H[?12l[?25h[?25l[40;158H2[21;2H[?12l[?25h[?25l[40;158H3[21;3H[?12l[?25h[?25l[34m*/[m[21;3H[K[24;1H[34m/[m[40;158H2[21;2H[?12l[?25h[40;1H[K[21;1H[?25l[40;155H21,1[10CTop[21;1H[?12l[?25h[?25l[40;155H[K[40;1H:[?12l[?25hw[?25l[?12l[?25hq[?25l[?12l[?25h[?25l"main.c" 171L, 3583C written
-[?1l>[?12l[?25h[?1049l]0;root@comp:~/cs161/src/kern/main[root@comp main]# cd ..
-]0;root@comp:~/cs161/src/kern[root@comp kern]# cd ..
-]0;root@comp:~/cs161/src[root@comp src]# cd ..
-]0;root@comp:~/cs161[root@comp cs161]# git s[Kdiff
-[?1h=diff --git a/src/kern/main/main.c b/src/kern/main/main.c[m
-index e0a9e68..c042284 100644[m
---- a/src/kern/main/main.c[m
-+++ b/src/kern/main/main.c[m
-@@ -17,6 +17,11 @@[m
- #include <version.h>[m
- [m
- /*[m
-+ * Phillip Robertson & Grace Wang[m
-+*/[m
-+[m
-+[m
-+/*[m
-  * These two pieces of data are maintained by the makefiles and build system.[m
-  * buildconfig is the name of the config file the kernel was configured with.[m
-  * buildversion starts at 1 and is incremented every time you link a kernel. [m
-diff --git a/typescript b/typescript[m
-index e69de29..8a8b6b8 100644[m
---- a/typescript[m
-+++ b/typescript[m
-@@ -0,0 +1,45 @@[m
-+Script started on Fri 05 Sep 2014 07:46:39 PM EDT[m
-+0;root@comp:~/cs161[7m^G[27m[root@comp cs161]# cd /ke[7m^G^H^H[27msrc[7m^G^H^H^H^H[27msrc/kern/ro[7m^G^H^H[27mmain/[m
-+0;root@comp:~/cs161/src/kern/main[7m^G[27m[root@comp main]# vim main.c [m
-+[27m[m"main.c" 166L, 3541Cc[34m/*[m
-+ * Main.[m
-+ */[m[m
-+[35m#include [m[31m<types.h>[m[m
-+[35m#include [m[31m<kern/errno.h>[m[m
-+[35m#include [m[31m<kern/unistd.h>[m[m
-+[35m#include [m[31m<lib.h>[m[m
-+[35m#include [m[31m<machine/spl.h>[m[m
-+[35m#include [m[31m<test.h>[m[m
-+[35m#include [m[31m<synch.h>[m[m
-+[35m#include [m[31m<thread.h>[m[m
-+[35m#include [m[31m<scheduler.h>[m[m
-+[35m#include [m[31m<dev.h>[m[m
-+[35m#include [m[31m<vfs.h>[m[m
-+[35m#include [m[31m<vm.h>[m[m
-:[K[K+[35m#include [m[31m<syscall.h>[m[m
-:[K[K+[35m#include [m[31m<version.h>[m[m
-:[K[K+[m
-:[K[K+[34m/*[m
-:[K[K+ * These two pieces of data are maintained by the makefiles and build system.[m
-:[K[K+ * buildconfig is the name of the config file the kernel was configured with.[m
-:[K[K+ * buildversion starts at 1 and is incremented every time you link a kernel. [m
-:[K[K+ *[m
-:[K[K+ * The purpose is not to show off how many kernels you've linked, but[m
-:[K[K+ * to make it easy to make sure that the kernel you just booted is the[m
-:[K[K+ * same one you just built.[m
-:[K[K+ */[m[m
-:[K[K+[32mextern[m [32mconst[m [32mint[m buildversion;[m
-:[K[K+[32mextern[m [32mconst[m [32mchar[m buildconfig[];[m
-:[K[K+[m
-:[K[K+[34m/*[m
-:[K[K+ * Copyright message for the OS/161 base code.[m
-:[K[K+ */[m[m
-:[K[K+[32mstatic[m [32mconst[m [32mchar[m harvard_copyright[] =[m
-:[K[K+    [31m"Copyright (c) 2000, 2001, 2002, 2003[m[35m\n[m[31m"[m[m
-:[K[K+    [31m"   President and Fellows of Harvard College.  All rights reserved.[m[35m\n[m[31m"[m;[m
-:[
