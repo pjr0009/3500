@@ -28,7 +28,9 @@ hostinfo               = unknown
 /bin/universe          = unknown
 
 PATH: /root/cs161/bin
-PATH: /usr/local/sbin
+PATH: /root/cs161/root//usr/local/sbin
+PATH: /root/cs161/bin
+PATH: /root/cs161/root//usr/local/sbin
 PATH: /usr/local/bin
 PATH: /sbin
 PATH: /bin

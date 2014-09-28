@@ -111,9 +111,8 @@ lock_create(const char *name)
 		kfree(lock);
 		return NULL;
 	}
-	
-	// add stuff here as needed
-	lock -> value = 0; //set the resource as locked initially because why create lock if no one needs it
+	lock -> value = zero; //set the resource as locked initially because it was created out of necessity
+	lock -> lockOwner = NULL;
 	return lock;
 }
 
@@ -121,7 +120,7 @@ void
 lock_destroy(struct lock *lock)
 {
 	assert(lock != NULL);
-
+	
 	// add stuff here as needed
 	
 	kfree(lock->name);
@@ -131,39 +130,49 @@ lock_destroy(struct lock *lock)
 void
 lock_acquire(struct lock *lock)
 {
-	int value = lock-> value;
-	if(value == zero){
-	  //lock isn't free?
-	}
-	else{
-	  lock->value=one;
-	}
+  int spl;
+  assert(lock != NULL);
+	assert(in_interrupt==0);
 
-	(void)lock;  // suppress warning until code gets written
+  spl = splhigh();
+  assert(!lock_do_i_hold(lock)); 
+  while (lock->value == zero) {
+    thread_sleep(lock);
+  }
+  lock->lockOwner = curthread;
+  lock->value = one;
+  splx(spl);
+
 }
 
 void
 lock_release(struct lock *lock)
 {	
-	
-	if(lock->value == one){
-	}
-	else{
-	  lock->value=zero;
-	}
-	(void)lock;  // suppress warning until code gets written
+
+  assert(lock != NULL);
+  assert(lock->value == one);
+  assert(lock_do_i_hold(lock));
+
+  int spl;
+  spl = splhigh();
+  lock->value = zero;
+  lock->lockOwner = NULL;
+  thread_wakeup(lock);
+  splx(spl);
+
 }
 
 int
 lock_do_i_hold(struct lock *lock)
 {
-	// Write this
+     assert(lock != NULL);
 
-	(void)lock;  // suppress warning until code gets written
+  	if (lock->value == zero) return 0;
 
-	return 1;    // dummy until code gets written
+  	if (lock->lockOwner == curthread) return 1;
+  	else return 0;
+
 }
-
 ////////////////////////////////////////////////////////////
 //
 // CV
@@ -173,7 +182,8 @@ struct cv *
 cv_create(const char *name)
 {
 	struct cv *cv;
-
+	kprintf("being called");
+	
 	cv = kmalloc(sizeof(struct cv));
 	if (cv == NULL) {
 		return NULL;
@@ -185,7 +195,7 @@ cv_create(const char *name)
 		return NULL;
 	}
 	
-	// add stuff here as needed
+	
 	
 	return cv;
 }
@@ -193,7 +203,8 @@ cv_create(const char *name)
 void
 cv_destroy(struct cv *cv)
 {
-	assert(cv != NULL);
+	//assert(cv != NULL);
+	//kprintf("being called");
 
 	// add stuff here as needed
 	
@@ -203,18 +214,31 @@ cv_destroy(struct cv *cv)
 
 void
 cv_wait(struct cv *cv, struct lock *lock)
-{
-	// Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
-}
+{	
+	int spl;
+
+	lock_release(lock);
+	spl = splhigh();
+	thread_sleep(cv);
+	splx(spl);
+	lock_acquire(lock);
+	(void)cv;
+	(void)lock;
+}	
 
 void
 cv_signal(struct cv *cv, struct lock *lock)
 {
+
+	// kprintf("being called");
+	
+	assert(lock_do_i_hold(lock));
+	lock_release(lock);
+	thread_wakeup(cv);
+
+	(void)cv;
+	(void)lock;
 	// Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
 }
 
 void

@@ -39,7 +39,6 @@ configure:3449: checking for bison
 configure:3489: checking for bison
 configure:3528: checking for gm4
 configure:3567: checking for flex
-configure:3567: checking for lex
 configure:3607: checking for flex
 configure:3646: checking for makeinfo
 configure:3699: checking for expect

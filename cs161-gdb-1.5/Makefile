@@ -252,10 +252,10 @@ BUILD_PREFIX_1 = @BUILD_PREFIX_1@
 BOOT_CFLAGS= -g -O2
 BOOT_LDFLAGS=
 
-BISON = /root/cs161/cs161-gdb-1.5/gdb-6.6+cs161/missing bison
+BISON = bison
 YACC = byacc
-FLEX = /root/cs161/cs161-gdb-1.5/gdb-6.6+cs161/missing flex
-LEX = /root/cs161/cs161-gdb-1.5/gdb-6.6+cs161/missing flex
+FLEX = flex
+LEX = flex
 M4 = m4
 MAKEINFO = /root/cs161/cs161-gdb-1.5/gdb-6.6+cs161/missing makeinfo
 EXPECT = expect

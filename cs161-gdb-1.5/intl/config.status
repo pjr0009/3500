@@ -522,7 +522,7 @@ s,@ALLOCA@,,;t t
 s,@GLIBC21@,yes,;t t
 s,@LIBICONV@,,;t t
 s,@LTLIBICONV@,,;t t
-s,@INTLBISON@,:,;t t
+s,@INTLBISON@,bison,;t t
 s,@BUILD_INCLUDED_LIBINTL@,no,;t t
 s,@USE_INCLUDED_LIBINTL@,no,;t t
 s,@CATOBJEXT@,.gmo,;t t

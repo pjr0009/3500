@@ -51,6 +51,7 @@ void              sem_destroy(struct semaphore *);
 struct lock {
 	char *name;
 	enum {zero, one} value;
+	struct thread *lockOwner;
 	// add what you need here
 	// (don't forget to mark things volatile as needed)
 };
