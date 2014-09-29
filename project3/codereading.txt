@@ -1,0 +1,86 @@
+4.1 Thread Questions
+
+What happens to a thread when it exits (i.e., calls thread_exit() )? What about when it sleeps?
+thread_exit() causes the thread to exit. It first checks that the thread's
+stack has not overflown by checking the magic number at the bottom of the
+stack. Then it blocks all interrupts, Deallocates the virtual machine memory
+space, decrements the reference count to the file it was using (if the thread
+has a non null t_cwd member). After that we call mi_switch, which takes an
+enum type speficying the type of current thread (in this case zombie - meaning
+the thread is ready to exit). mi_switch changes the type of the current thread
+to zombie and adds it to the zombies array of threads.
+
+thread_sleep() requires interrupts to be turned off, and that the thread is
+not currently in an interupt handler. once we check that we're not in an
+interrupt, we call the function to switch the thread (just like with
+thread_exit, except with the sleep enum type) and put the current thread to
+sleep at a memory address which may be used to locate the thread for wakeup 
+
+What function(s) handle(s) a context switch?
+mi_switch
+
+How many thread states are there? What are they?
+inspecting the list of types called "threadstate_t", there is: "run", "ready",
+"zombie", and "sleep".
+What does it mean to turn interrupts off? How is this accomplished? Why is it important to turn off interrupts in the thread subsystem code?
+Turning off interrupts means that the current thread of execution can not be
+inturrupted by any interupts. Interupting a process may lead to race
+conditions because if you are in a critical section of process A and are
+interupted, there is not a guarantee of mutual exclusion. This is
+accomplished by setting the priority level of the process to the highest
+value, which ensures it may not be interupted.
+
+What happens when a thread wakes up another thread? How does a sleeping thread get to run again?
+A sleeping thread is only run again when the thread_wakeup function is called with
+the memory address of the respective thread's sleep_adr. Usually it
+is some kind of syncrhonization primitive or data structure. basically when
+you put a thread to sleep, you put it to sleep using a value (like a reference
+to a particular semaphore) that you can later use to wake up the sleeping
+thread. Additionally the current thread is put to sleep before the other
+thread is woken.
+
+4.2 Scheduler Questions
+What function is responsible for choosing the next thread to run?
+The function scheduler() returns the next thread to be run, however the method
+q_remhead() technically is the one picking the next thread to run, and that
+simply just removes one item from the head of the queue
+
+How does that function pick the next thread?
+it simply removes a thread from the head of the queue
+
+What role does the hardware timer play in scheduling? What hardware independent function is called on a timer interrupt?
+the hardware time allows for interrupts to occur at specific points in time
+4.3 Synchronization Questions
+
+Describe how thread_sleep() and thread_wakeup() are used to implement semaphores. 
+thread sleep/wakeup is used in the context of semaphores as follows:
+
+when you call P(), the address of the semaphore is passed in to P as one of
+its arguments, then we check to see if the semaphore is > 0, if it's not we
+use thread_sleep(semaphore address) to put the thread to sleep (we use the
+semaphore address so we know how to wake it up later, and under what
+conditions).
+
+When V() is called, we increment the semaphore value, and call
+thread_wakeup(semaphore address) to wake up one of the sleeping threads that
+was waiting on the current thread to finish.
+ 
+What is the purpose of the argument passed to thread_sleep()?
+it's a little confusing at first, but after careful inspection it makes sense.
+When we want to put a thread to sleep, we must know under what circumstances
+to wake it back up. Well we know that the thread is going to sleep because no
+resources are availble, and its being blocked by another thread. The mechanism
+known for coordinating the execution of these threads are semaphores, and thus
+the semaphore will always be around as long as the threads relying on it are
+around. so if we put a thread to sleep on the value of the semaphore address,
+we know that we can simply call thread_wakeup(semaphore address) to wake one
+of the threads back up that was waiting on that resource. This makes things simple
+because we don't have to maintain any secondary lists describing which threads
+are waiting on which resources, etc...
+
+Why does the lock API in OS/161 provide lock_do_i_hold(), but not lock_get_holder()?
+because we don't want/need to know who has the lock from the perspective of
+another thread. only the thread holding the lock can return the lock, so its
+not very useful for a blocked thread to know who's holding the lock, as it can
+do nothing about it.
+
