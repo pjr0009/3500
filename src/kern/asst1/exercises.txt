@@ -10,5 +10,14 @@ there is a mouse waiting. therefore it is less efficient utilization of
 resources. However this approach avoids the mouse starving, which is
 preferrential.
 
+Our catlock implementation uses the same approach except with condition
+variables/locks. the lock mechanism will check and see if the lock is free.
+if its not, it will put the current thread to sleep until it is woken up by 
+the lock_release method. The lock release method will wake up the thread
+sleeping on the address of the lock. once it wakes up it will resume execution
+of where it was put to sleep. We use condition variables to signal and wait on
+these various conditions.
 
+2) I would say that the condition variables implementation is simpler, but the
+semaphore based solution is a little more straightforward. 
 

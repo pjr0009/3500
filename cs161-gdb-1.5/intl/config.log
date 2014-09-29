@@ -269,7 +269,6 @@ configure:6152: result: yes
 configure:6164: checking for LC_MESSAGES
 configure:6216: result: yes
 configure:6232: checking for bison
-configure:6248: found /usr/bin/bison
 configure:6258: result: bison
 configure:6271: checking version of bison
 configure:6280: result: 2.4.1, ok

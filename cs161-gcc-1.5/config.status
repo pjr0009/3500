@@ -146,10 +146,10 @@ s%@target_configdirs@%%g
 s%@CC_FOR_BUILD@%$(CC)%g
 s%@config_shell@%/bin/sh%g
 s%@YACC@%byacc%g
-s%@BISON@%/root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing bison%g
+s%@BISON@%bison%g
 s%@M4@%m4%g
-s%@LEX@%/root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing flex%g
-s%@FLEX@%/root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing flex%g
+s%@LEX@%flex%g
+s%@FLEX@%flex%g
 s%@MAKEINFO@%/root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing makeinfo%g
 s%@EXPECT@%expect%g
 s%@RUNTEST@%runtest%g

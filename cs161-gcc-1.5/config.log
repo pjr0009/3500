@@ -12,7 +12,6 @@ configure:1938: checking whether the C compiler (gcc  ) works
 configure:1954: gcc -o conftest    conftest.c  1>&5
 configure:1980: checking whether the C compiler (gcc  ) is a cross-compiler
 configure:1985: checking whether we are using GNU C
-configure:1994: gcc -E conftest.c
 configure:2013: checking whether gcc accepts -g
 configure:2080: checking for gnatbind
 configure:2145: checking whether compiler driver understands Ada
@@ -37,43 +36,30 @@ choke me
 
 ; return 0; }
 configure:3319: checking for bison
-configure:3319: checking for byacc
 configure:3359: checking for bison
 configure:3398: checking for gm4
-configure:3398: checking for gnum4
-configure:3398: checking for m4
 configure:3437: checking for flex
-configure:3437: checking for lex
 configure:3477: checking for flex
 configure:3516: checking for makeinfo
 configure:3569: checking for expect
 configure:3610: checking for runtest
 configure:3658: checking for x86_64-unknown-linux-gnu-ar
-configure:3689: checking for ar
 configure:3733: checking for x86_64-unknown-linux-gnu-as
-configure:3764: checking for as
 configure:3808: checking for x86_64-unknown-linux-gnu-dlltool
 configure:3839: checking for dlltool
 configure:3883: checking for x86_64-unknown-linux-gnu-ld
-configure:3914: checking for ld
 configure:3958: checking for x86_64-unknown-linux-gnu-lipo
 configure:3989: checking for lipo
 configure:4033: checking for x86_64-unknown-linux-gnu-nm
-configure:4064: checking for nm
 configure:4108: checking for x86_64-unknown-linux-gnu-ranlib
-configure:4139: checking for ranlib
 configure:4178: checking for x86_64-unknown-linux-gnu-strip
-configure:4209: checking for strip
 configure:4248: checking for x86_64-unknown-linux-gnu-windres
 configure:4279: checking for windres
 configure:4323: checking for x86_64-unknown-linux-gnu-objcopy
-configure:4354: checking for objcopy
 configure:4398: checking for x86_64-unknown-linux-gnu-objdump
-configure:4429: checking for objdump
 configure:4480: checking for mips-linux-ar
 configure:4555: checking for mips-linux-as
 configure:4630: checking for mips-linux-cc
-configure:4630: checking for mips-linux-gcc
 configure:4705: checking for mips-linux-c++
 configure:4705: checking for mips-linux-g++
 configure:4705: checking for mips-linux-cxx

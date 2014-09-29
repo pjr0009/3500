@@ -41,7 +41,7 @@ AUTOCONF = /root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing autoconf
 AUTOHEADER = /root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing autoheader
 CC = gcc
 RANLIB = ranlib
-YACC = : -y -d
+YACC = bison -y -d
 YFLAGS = --name-prefix=__gettext
 CPPFLAGS = 
 CFLAGS = -g -O2 

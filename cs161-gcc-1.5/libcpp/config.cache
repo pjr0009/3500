@@ -99,6 +99,7 @@ ac_cv_prog_RANLIB=${ac_cv_prog_RANLIB=ranlib}
 ac_cv_prog_cc_g=${ac_cv_prog_cc_g=yes}
 ac_cv_prog_cc_stdc=${ac_cv_prog_cc_stdc=}
 ac_cv_prog_egrep=${ac_cv_prog_egrep='grep -E'}
+ac_cv_prog_make_gmake_set=${ac_cv_prog_make_gmake_set=yes}
 ac_cv_prog_make_make_set=${ac_cv_prog_make_make_set=yes}
 ac_cv_sizeof_int=${ac_cv_sizeof_int=4}
 ac_cv_sizeof_long=${ac_cv_sizeof_long=8}

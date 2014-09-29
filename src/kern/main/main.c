@@ -158,12 +158,10 @@ sys_reboot(int code)
 int
 kmain(char *arguments)
 {
-	kprintf("hererer");
 	boot();
 	char ** args;
 	int nargs;
 	menu(arguments);
-	kprintf("hhhhiii");
 
 	/* Should not get here */
 	return 0;

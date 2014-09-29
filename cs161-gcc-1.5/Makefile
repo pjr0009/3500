@@ -251,10 +251,10 @@ BUILD_PREFIX_1 = loser-
 # here so that they can be overridden by Makefile fragments.
 BOOT_CFLAGS= -g -O2
 
-BISON = /root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing bison
+BISON = bison
 YACC = byacc
-FLEX = /root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing flex
-LEX = /root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing flex
+FLEX = flex
+LEX = flex
 M4 = m4
 MAKEINFO = /root/cs161/cs161-gcc-1.5/gcc-4.1.2+cs161/missing makeinfo
 EXPECT = expect

@@ -134,6 +134,7 @@ ac_cv_prog_cc_w_no_variadic_macros=${ac_cv_prog_cc_w_no_variadic_macros=yes}
 ac_cv_prog_cc_w_old_style_definition=${ac_cv_prog_cc_w_old_style_definition=yes}
 ac_cv_prog_egrep=${ac_cv_prog_egrep='grep -E'}
 ac_cv_prog_have_mktemp_command=${ac_cv_prog_have_mktemp_command=yes}
+ac_cv_prog_make_gmake_set=${ac_cv_prog_make_gmake_set=yes}
 ac_cv_prog_make_make_set=${ac_cv_prog_make_make_set=yes}
 ac_cv_search_exc_resume=${ac_cv_search_exc_resume=no}
 ac_cv_search_ldexp=${ac_cv_search_ldexp='none required'}
@@ -172,7 +173,7 @@ am_cv_lib_iconv=${am_cv_lib_iconv=no}
 am_cv_proto_iconv=${am_cv_proto_iconv='extern size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);'}
 am_cv_proto_iconv_arg1=${am_cv_proto_iconv_arg1=}
 am_cv_val_LC_MESSAGES=${am_cv_val_LC_MESSAGES=yes}
-gcc_cv_as=${gcc_cv_as=/root/cs161/tools/bin/mips-linux-as}
+gcc_cv_as=${gcc_cv_as=./as}
 gcc_cv_as_balign_and_p2align=${gcc_cv_as_balign_and_p2align=yes}
 gcc_cv_as_comdat_group=${gcc_cv_as_comdat_group=no}
 gcc_cv_as_comdat_group_percent=${gcc_cv_as_comdat_group_percent=no}
@@ -252,7 +253,7 @@ gcc_cv_have_decl_vsnprintf=${gcc_cv_have_decl_vsnprintf=yes}
 gcc_cv_header_inttypes_h=${gcc_cv_header_inttypes_h=yes}
 gcc_cv_header_string=${gcc_cv_header_string=yes}
 gcc_cv_initfini_array=${gcc_cv_initfini_array=yes}
-gcc_cv_ld=${gcc_cv_ld=/root/cs161/tools/bin/mips-linux-ld}
+gcc_cv_ld=${gcc_cv_ld=./collect-ld}
 gcc_cv_ld_as_needed=${gcc_cv_ld_as_needed=no}
 gcc_cv_ld_bfd_srcdir=${gcc_cv_ld_bfd_srcdir=/root/cs161/cs161-gcc-1.5/./gcc-4.1.2+cs161/bfd}
 gcc_cv_ld_eh_frame_hdr=${gcc_cv_ld_eh_frame_hdr=yes}
@@ -264,7 +265,7 @@ gcc_cv_ld_static_dynamic=${gcc_cv_ld_static_dynamic=yes}
 gcc_cv_ld_sysroot=${gcc_cv_ld_sysroot=no}
 gcc_cv_libc_provides_ssp=${gcc_cv_libc_provides_ssp=no}
 gcc_cv_mkdir_takes_one_arg=${gcc_cv_mkdir_takes_one_arg=no}
-gcc_cv_nm=${gcc_cv_nm=/root/cs161/tools/bin/mips-linux-nm}
+gcc_cv_nm=${gcc_cv_nm=./nm}
 gcc_cv_objdump=${gcc_cv_objdump=/root/cs161/tools/bin/mips-linux-objdump}
 gcc_cv_prog_LN_S=${gcc_cv_prog_LN_S='ln -s'}
 gcc_cv_prog_cmp_skip=${gcc_cv_prog_cmp_skip=gnucompare}

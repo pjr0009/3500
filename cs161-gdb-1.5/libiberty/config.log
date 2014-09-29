@@ -567,7 +567,6 @@ on comp
 config.status:702: creating Makefile
 config.status:702: creating testsuite/Makefile
 config.status:799: creating config.h
-config.status:1185: config.h is unchanged
 config.status:1343: executing default commands
 
 ## ---------------- ##

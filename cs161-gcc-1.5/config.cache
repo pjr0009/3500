@@ -17,11 +17,14 @@ ac_cv_prog_AR=${ac_cv_prog_AR=ar}
 ac_cv_prog_AR_FOR_TARGET=${ac_cv_prog_AR_FOR_TARGET=mips-linux-ar}
 ac_cv_prog_AS=${ac_cv_prog_AS=as}
 ac_cv_prog_AS_FOR_TARGET=${ac_cv_prog_AS_FOR_TARGET=mips-linux-as}
+ac_cv_prog_BISON=${ac_cv_prog_BISON=bison}
 ac_cv_prog_CC=${ac_cv_prog_CC=gcc}
 ac_cv_prog_CC_FOR_TARGET=${ac_cv_prog_CC_FOR_TARGET=mips-linux-gcc}
+ac_cv_prog_FLEX=${ac_cv_prog_FLEX=flex}
 ac_cv_prog_GCC_FOR_TARGET=${ac_cv_prog_GCC_FOR_TARGET=mips-linux-gcc}
 ac_cv_prog_LD=${ac_cv_prog_LD=ld}
 ac_cv_prog_LD_FOR_TARGET=${ac_cv_prog_LD_FOR_TARGET=mips-linux-ld}
+ac_cv_prog_LEX=${ac_cv_prog_LEX=flex}
 ac_cv_prog_LN_S=${ac_cv_prog_LN_S='ln -s'}
 ac_cv_prog_M4=${ac_cv_prog_M4=m4}
 ac_cv_prog_NM=${ac_cv_prog_NM=nm}

@@ -111,8 +111,9 @@ lock_create(const char *name)
 		kfree(lock);
 		return NULL;
 	}
-	lock -> value = zero; //set the resource as locked initially because it was created out of necessity
-	lock -> lockOwner = NULL;
+	
+  lock->value = 0;
+  lock->lockOwner = NULL;
 	return lock;
 }
 
@@ -120,10 +121,8 @@ void
 lock_destroy(struct lock *lock)
 {
 	assert(lock != NULL);
-	
-	// add stuff here as needed
-	
-	kfree(lock->name);
+
+	kfree(lock->value);
 	kfree(lock);
 }
 
@@ -136,43 +135,40 @@ lock_acquire(struct lock *lock)
 
   spl = splhigh();
   assert(!lock_do_i_hold(lock)); 
-  while (lock->value == zero) {
+  while (lock->value) {
     thread_sleep(lock);
   }
   lock->lockOwner = curthread;
-  lock->value = one;
+  lock->value = 1;
   splx(spl);
-
 }
 
 void
 lock_release(struct lock *lock)
-{	
-
+{
   assert(lock != NULL);
-  assert(lock->value == one);
+  assert(lock->value);
   assert(lock_do_i_hold(lock));
 
   int spl;
   spl = splhigh();
-  lock->value = zero;
+  lock->value = 0;
   lock->lockOwner = NULL;
   thread_wakeup(lock);
   splx(spl);
-
 }
 
 int
 lock_do_i_hold(struct lock *lock)
 {
-     assert(lock != NULL);
+  assert(lock != NULL);
 
-  	if (lock->value == zero) return 0;
+  if (!lock->value) return 0;
 
-  	if (lock->lockOwner == curthread) return 1;
-  	else return 0;
-
+  if (lock->lockOwner == curthread) return 1;
+  else return 0;
 }
+
 ////////////////////////////////////////////////////////////
 //
 // CV
@@ -182,8 +178,7 @@ struct cv *
 cv_create(const char *name)
 {
 	struct cv *cv;
-	kprintf("being called");
-	
+
 	cv = kmalloc(sizeof(struct cv));
 	if (cv == NULL) {
 		return NULL;
@@ -195,56 +190,42 @@ cv_create(const char *name)
 		return NULL;
 	}
 	
-	
-	
 	return cv;
 }
 
 void
 cv_destroy(struct cv *cv)
 {
-	//assert(cv != NULL);
-	//kprintf("being called");
+	assert(cv != NULL);
 
-	// add stuff here as needed
-	
 	kfree(cv->name);
 	kfree(cv);
 }
 
 void
 cv_wait(struct cv *cv, struct lock *lock)
-{	
-	int spl;
+{
+  int spl;
 
-	lock_release(lock);
-	spl = splhigh();
-	thread_sleep(cv);
-	splx(spl);
-	lock_acquire(lock);
-	(void)cv;
-	(void)lock;
-}	
+  lock_release(lock);
+  spl = splhigh();
+  thread_sleep(cv);
+  splx(spl);
+  lock_acquire(lock);
+}
 
 void
 cv_signal(struct cv *cv, struct lock *lock)
 {
-
-	// kprintf("being called");
-	
-	assert(lock_do_i_hold(lock));
-	lock_release(lock);
-	thread_wakeup(cv);
-
-	(void)cv;
-	(void)lock;
-	// Write this
+  int spl = splhigh();
+  thread_wakeup(cv);
+  splx(spl);
 }
 
 void
 cv_broadcast(struct cv *cv, struct lock *lock)
 {
-	// Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
+  int spl = splhigh();
+  thread_wakeup(cv);
+  splx(spl);
 }
