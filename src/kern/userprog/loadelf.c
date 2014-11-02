@@ -17,6 +17,7 @@
 #include <thread.h>
 #include <curthread.h>
 #include <vnode.h>
+#include "opt-A3.h"
 
 /*
  * Load a segment at virtual address VADDR. The segment in memory
@@ -180,9 +181,23 @@ load_elf(struct vnode *v, vaddr_t *entrypoint)
 					  ph.p_flags & PF_R,
 					  ph.p_flags & PF_W,
 					  ph.p_flags & PF_X);
-		if (result) {
+        
+        if (result) {
 			return result;
 		}
+
+        
+#if OPT_A3
+        if (curthread->t_vmspace->as_offset1 == 0) {
+            curthread->t_vmspace->as_offset1 = offset;
+        }
+        
+        if (curthread->t_vmspace->as_offset2 == 0) {
+            curthread->t_vmspace->as_offset2 = offset;
+        }
+
+#endif
+        
 	}
 
 	result = as_prepare_load(curthread->t_vmspace);
@@ -194,39 +209,39 @@ load_elf(struct vnode *v, vaddr_t *entrypoint)
 	 * Now actually load each segment.
 	 */
 
-	for (i=0; i<eh.e_phnum; i++) {
-		off_t offset = eh.e_phoff + i*eh.e_phentsize;
-		mk_kuio(&ku, &ph, sizeof(ph), offset, UIO_READ);
-
-		result = VOP_READ(v, &ku);
-		if (result) {
-			return result;
-		}
-
-		if (ku.uio_resid != 0) {
-			/* short read; problem with executable? */
-			kprintf("ELF: short read on phdr - file truncated?\n");
-			return ENOEXEC;
-		}
-
-		switch (ph.p_type) {
-		    case PT_NULL: /* skip */ continue;
-		    case PT_PHDR: /* skip */ continue;
-		    case PT_MIPS_REGINFO: /* skip */ continue;
-		    case PT_LOAD: break;
-		    default:
-			kprintf("loadelf: unknown segment type %d\n", 
-				ph.p_type);
-			return ENOEXEC;
-		}
-
-		result = load_segment(v, ph.p_offset, ph.p_vaddr, 
-				      ph.p_memsz, ph.p_filesz,
-				      ph.p_flags & PF_X);
-		if (result) {
-			return result;
-		}
-	}
+//	for (i=0; i<eh.e_phnum; i++) {
+//		off_t offset = eh.e_phoff + i*eh.e_phentsize;
+//		mk_kuio(&ku, &ph, sizeof(ph), offset, UIO_READ);
+//
+//		result = VOP_READ(v, &ku);
+//		if (result) {
+//			return result;
+//		}
+//
+//		if (ku.uio_resid != 0) {
+//			/* short read; problem with executable? */
+//			kprintf("ELF: short read on phdr - file truncated?\n");
+//			return ENOEXEC;
+//		}
+//
+//		switch (ph.p_type) {
+//		    case PT_NULL: /* skip */ continue;
+//		    case PT_PHDR: /* skip */ continue;
+//		    case PT_MIPS_REGINFO: /* skip */ continue;
+//		    case PT_LOAD: break;
+//		    default:
+//			kprintf("loadelf: unknown segment type %d\n", 
+//				ph.p_type);
+//			return ENOEXEC;
+//		}
+//
+//		result = load_segment(v, ph.p_offset, ph.p_vaddr, 
+//				      ph.p_memsz, ph.p_filesz,
+//				      ph.p_flags & PF_X);
+//		if (result) {
+//			return result;
+//		}
+//	}
 
 	result = as_complete_load(curthread->t_vmspace);
 	if (result) {
