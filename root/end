@@ -1,0 +1,12 @@
+Script started on Mon 03 Nov 2014 08:45:56 PM EST
+]0;root@comp:~/cs161/root[?1034h[root@comp root]# script endexit
+Script started, file is endexit
+]0;root@comp:~/cs161/root[?1034h[root@comp root]# exit
+exit
+Script done, file is endexit
+]0;root@comp:~/cs161/root[root@comp root]# eit
+bash: eit: command not found
+]0;root@comp:~/cs161/root[root@comp root]# exit
+exit
+
+Script done on Mon 03 Nov 2014 08:46:21 PM EST
