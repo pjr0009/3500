@@ -1,15 +1,23 @@
 #ifndef _THREAD_H_
 #define _THREAD_H_
-
 /*
  * Definition of a thread.
  */
 
 /* Get machine-dependent stuff */
 #include <machine/pcb.h>
-
+#include <types.h>
+#include <child_table.h>
+#include <synch.h>
 
 struct addrspace;
+
+typedef enum {
+	S_RUN,		/* running */
+	S_READY,	/* ready to run */
+	S_SLEEP,	/* sleeping */
+	S_ZOMB,	/* zombie; exited but not yet deleted */
+} threadstate_t;
 
 struct thread {
 	/**********************************************************/
@@ -24,6 +32,19 @@ struct thread {
 	/**********************************************************/
 	/* Public thread members - can be used by other code      */
 	/**********************************************************/
+	
+	pid_t pid;
+	struct thread *parent;
+	struct child_table *children;
+	int exit_status;
+	/*
+	 * This is the filetable for the thread.
+	 */
+	struct filetable *ft;
+	
+	/*
+	 Locks
+	*/
 	
 	/*
 	 * This is public because it isn't part of the thread system,
@@ -96,6 +117,30 @@ void thread_wakeup(const void *addr);
  */
 int thread_hassleepers(const void *addr);
 
+/*
+ * returns true (1) if the number of threads in the system is
+ * equal to 1, otherwise returns fals (0).
+ * 
+ * Usage Note: if this function returns 0 (false), the actual thread
+ * count in the system may have changed by the time the calling 
+ * function is able to use the returned value.  Thus, a return value
+ * of 0 provides little information to the caller.
+ * However, if the return value is 1 (true), then the calling thread
+ * is the only thread in the system.  Unless the caller itself
+ * creates new threads (or unless the kernel spontaneously lauches
+ * new threads, e.g., in response to interrupts), the caller will
+ * know that it is the only thread in the system.
+ *
+ * This function is NOT intended for general use in the kernel.
+ * It is intended to be used only to simplify the early
+ * testing of the kernel.   Specifically, it is intended to be used
+ * to allow the kernel's menu thread to wait for the completion of
+ * a user-level program that it launches via the kernel menu "p"
+ * command.  Once A2 has been completed there will probably be a
+ * better way to make the menu thread wait, and this function will
+ * no longer be needed.
+ */
+int one_thread_only(void);
 
 /*
  * Private thread functions.

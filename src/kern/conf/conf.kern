@@ -365,6 +365,7 @@ file      thread/hardclock.c
 file      thread/synch.c
 file      thread/scheduler.c
 file      thread/thread.c
+file      thread/filetable.c
 
 #
 # Main/toplevel stuff
@@ -372,7 +373,6 @@ file      thread/thread.c
 
 file      main/main.c
 file      main/menu.c
-
 #
 # User-level programming/system call support
 # (you will probably want to add stuff here while doing the basic system
@@ -383,13 +383,24 @@ file      userprog/loadelf.c
 file      userprog/runprogram.c
 file      userprog/uio.c
 
+file      userprog/open.c
+file      userprog/close.c
+file      userprog/read.c
+file      userprog/write.c
+file      userprog/_exit.c
+file      userprog/execv.c
+
+file      userprog/getpid.c
+file      thread/pid.c
+file      userprog/waitpid.c
+file      userprog/fork.c
+
 #
 # Virtual memory system
 # (you will probably want to add stuff here while doing the VM assignment)
-#
 
-optofffile dumbvm   vm/addrspace.c
 
+file vm/addrspace.c
 #
 # Network
 # (nothing here yet)
@@ -431,9 +442,9 @@ defoption netfs
 ########################################
 
 defoption synchprobs
-optfile   synchprobs  asst1/catlock.c
-optfile   synchprobs  asst1/catsem.c
+optfile   synchprobs  asst1/catmouse.c
 optfile   synchprobs  asst1/stoplight.c
+optfile   synchprobs  asst1/bowls.c
 
 
 ########################################
@@ -451,3 +462,11 @@ file		test/synchtest.c
 file		test/malloctest.c
 file		test/fstest.c
 optfile net	test/nettest.c
+
+# UW options for different assignments
+defoption A0
+defoption A1
+defoption A2
+defoption A3
+defoption A4
+defoption A5

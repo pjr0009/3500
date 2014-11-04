@@ -12,15 +12,11 @@
 #include <scheduler.h>
 #include <addrspace.h>
 #include <vnode.h>
+#include <filetable.h>
 #include "opt-synchprobs.h"
-
+#include <pid.h>
+#include <child_table.h>
 /* States a thread can be in. */
-typedef enum {
-	S_RUN,
-	S_READY,
-	S_SLEEP,
-	S_ZOMB,
-} threadstate_t;
 
 /* Global variable for the thread currently executing at any given time. */
 struct thread *curthread;
@@ -43,6 +39,7 @@ static
 struct thread *
 thread_create(const char *name)
 {
+    DEBUG(DB_THREADS, "Creating thread named `%s`\n", name);
 	struct thread *thread = kmalloc(sizeof(struct thread));
 	if (thread==NULL) {
 		return NULL;
@@ -59,9 +56,14 @@ thread_create(const char *name)
 
 	thread->t_cwd = NULL;
 	
+	  thread->pid = new_pid();
+	  thread->parent = NULL;
+	  thread->children = NULL;
+	  thread->exit_status = -1; //will be changed if _exit() is called
+	
 	// If you add things to the thread structure, be sure to initialize
 	// them here.
-	
+        thread->ft = ft_create();
 	return thread;
 }
 
@@ -75,6 +77,7 @@ static
 void
 thread_destroy(struct thread *thread)
 {
+    DEBUG(DB_THREADS, "DEBUG: Calling thread_destroy on thread `%s`.\n", thread->t_name);
 	assert(thread != curthread);
 
 	// If you add things to the thread structure, be sure to dispose of
@@ -87,6 +90,39 @@ thread_destroy(struct thread *thread)
 	if (thread->t_stack) {
 		kfree(thread->t_stack);
 	}
+	
+	struct child_table *p;
+	for (p = thread->children; p != NULL;) {
+	    struct child_table *temp = p;
+	    pid_parent_done(p->pid);
+	    p = p->next;
+	    kfree(temp);
+	}
+	int pid_update_success = 0;
+	int spl = splhigh();
+	if (thread->parent != NULL) {
+        for (p = thread->parent->children; p != NULL;) {
+            if (p->pid == thread->pid) {
+                pid_update_success = 1;
+                p->finished = 1;
+                p->exit_code = thread->exit_status;
+                p = NULL; //won't let me use break in a for loop, so I'll do this instead
+            } else {
+                p = p->next;
+            }
+        }
+        assert(pid_update_success);
+        pid_process_exit(thread->pid);
+	} else {
+	    pid_free(thread->pid);
+	}
+	splx(spl);
+	
+	assert(thread->ft != NULL);
+	ft_destroy(thread->ft);
+	
+	thread_wakeup((void *) thread->pid);
+	
 
 	kfree(thread->t_name);
 	kfree(thread);
@@ -164,6 +200,42 @@ thread_panic(void)
 }
 
 /*
+ * returns true (1) if the number of threads in the system is
+ * equal to 1, otherwise returns fals (0).
+
+ * Usage Note: if this function returns 0 (false), the actual thread
+ * count in the system may have changed by the time the calling 
+ * function is able to use the returned value.  Thus, a return value
+ * of 0 provides little information to the caller.
+ * However, if the return value is 1 (true), then the calling thread
+ * is the only thread in the system.  Unless the caller itself
+ * creates new threads (or unless the kernel spontaneously lauches
+ * new threads, e.g., in response to interrupts), the caller will
+ * know that it is the only thread in the system.
+ *
+ * This function is NOT intended for general use in the kernel.
+ * It is intended to be used only to simplify the early
+ * testing of the kernel.   Specifically, it is intended to be used
+ * to allow the kernel's menu thread to wait for the completion of
+ * a user-level program that it launches via the kernel menu "p"
+ * command.  Once A2 has been completed there will probably be a
+ * better way to make the menu thread wait, and this function will
+ * no longer be needed.
+ */
+int
+one_thread_only() {
+  int s;
+  int n;
+  /* numthreads is a shared variable, so turn interrupts
+     off to ensure that we can inspect its value atomically */
+  s = splhigh();
+  n = numthreads;
+  splx(s);
+  return(n==1);
+}
+
+
+/*
  * Thread initialization.
  */
 struct thread *
@@ -234,6 +306,7 @@ thread_fork(const char *name,
 	    void (*func)(void *, unsigned long),
 	    struct thread **ret)
 {
+    DEBUG(DB_THREADS, "DEBUG: Thread `%s` calling thread_fork.\n", curthread->t_name);
 	struct thread *newguy;
 	int s, result;
 
@@ -391,7 +464,6 @@ mi_switch(threadstate_t nextstate)
 	/*
 	 * Call the scheduler (must come *after* the array_adds)
 	 */
-
 	next = scheduler();
 
 	/* update curthread */
@@ -428,6 +500,7 @@ mi_switch(threadstate_t nextstate)
 void
 thread_exit(void)
 {
+    DEBUG(DB_THREADS, "DEBUG: Thread `%s` calling thread_exit.\n", curthread->t_name);
 	if (curthread->t_stack != NULL) {
 		/*
 		 * Check the magic number we put on the bottom end of
@@ -567,6 +640,8 @@ void
 mi_threadstart(void *data1, unsigned long data2, 
 	       void (*func)(void *, unsigned long))
 {
+    DEBUG(DB_THREADS, "DEBUG: Thread `%s` calling mi_threadstart.\n", curthread->t_name);
+    
 	/* If we have an address space, activate it */
 	if (curthread->t_vmspace) {
 		as_activate(curthread->t_vmspace);

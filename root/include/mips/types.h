@@ -35,7 +35,7 @@ typedef unsigned long long u_int64_t;	/* 64-bit unsigned integer */
  * compilers and see otherwise unexplicable type errors involving
  * size_t, try changing this.
  */
-#if 1
+#if 1 
 typedef unsigned size_t;		/* Size of a memory region */
 #else
 typedef unsigned long size_t;		/* Size of a memory region */

@@ -17,6 +17,7 @@
 #include "opt-synchprobs.h"
 #include "opt-sfs.h"
 #include "opt-net.h"
+#include <curthread.h>
 
 #define _PATH_SHELL "/bin/sh"
 
@@ -102,9 +103,16 @@ common_prog(int nargs, char **args)
 		"synchronization-problems kernel.\n");
 #endif
 
+
+	sys_waitpid(sys_getpid(), 1, 0);
+
+	struct thread *thread_runs;
 	result = thread_fork(args[0] /* thread name */,
 			args /* thread arg */, nargs /* thread arg */,
-			cmd_progthread, NULL);
+			cmd_progthread, &thread_runs);
+	int status = S_ZOMB;
+	int wait_return;
+	sys_waitpid(thread_runs->pid,&status, 0);
 	if (result) {
 		kprintf("thread_fork failed: %s\n", strerror(result));
 		return result;

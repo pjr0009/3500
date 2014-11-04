@@ -10,122 +10,31 @@
  * used. The cheesy hack versions in dumbvm.c are used instead.
  */
 
-struct addrspace *
-as_create(void)
-{
-	struct addrspace *as = kmalloc(sizeof(struct addrspace));
-	if (as==NULL) {
-		return NULL;
-	}
 
-	/*
-	 * Initialize as needed.
-	 */
 
-	return as;
+int as_valid_read_addr(struct addrspace *as, vaddr_t *check_addr) {
+    // if (check_addr < (vaddr_t*) USERTOP) {
+    //     if (check_addr >= (vaddr_t*) as->as_vbase1 && check_addr < (vaddr_t*) (as->as_vbase1 + as->as_npages1 * PAGE_SIZE)) {
+    //         return 1;
+    //     }
+    //     if (check_addr >= (vaddr_t*) as->as_vbase2 && check_addr < (vaddr_t*) (as->as_vbase2 + as->as_npages2 * PAGE_SIZE)) {
+    //         return 1;
+    //     }
+    //     if (check_addr >= (vaddr_t*) (USERTOP - DUMBVM_STACKPAGES * PAGE_SIZE)) {
+    //         return 1;
+    //     }
+    // }
+    return 1;
 }
 
-int
-as_copy(struct addrspace *old, struct addrspace **ret)
-{
-	struct addrspace *newas;
-
-	newas = as_create();
-	if (newas==NULL) {
-		return ENOMEM;
-	}
-
-	/*
-	 * Write this.
-	 */
-
-	(void)old;
-	
-	*ret = newas;
-	return 0;
+int as_valid_write_addr(struct addrspace *as, vaddr_t *check_addr) {
+    // if (check_addr < (vaddr_t*) USERTOP) {
+    //     if (check_addr >= (vaddr_t*) as->as_vbase2 && check_addr < (vaddr_t*) (as->as_vbase2 + as->as_npages2 * PAGE_SIZE)) {
+    //         return 1;
+    //     }
+    //     if (check_addr >= (vaddr_t*) (USERTOP - DUMBVM_STACKPAGES * PAGE_SIZE)) {
+    //         return 1;
+    //     }
+    // }
+    return 1;
 }
-
-void
-as_destroy(struct addrspace *as)
-{
-	/*
-	 * Clean up as needed.
-	 */
-	
-	kfree(as);
-}
-
-void
-as_activate(struct addrspace *as)
-{
-	/*
-	 * Write this.
-	 */
-
-	(void)as;  // suppress warning until code gets written
-}
-
-/*
- * Set up a segment at virtual address VADDR of size MEMSIZE. The
- * segment in memory extends from VADDR up to (but not including)
- * VADDR+MEMSIZE.
- *
- * The READABLE, WRITEABLE, and EXECUTABLE flags are set if read,
- * write, or execute permission should be set on the segment. At the
- * moment, these are ignored. When you write the VM system, you may
- * want to implement them.
- */
-int
-as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,
-		 int readable, int writeable, int executable)
-{
-	/*
-	 * Write this.
-	 */
-
-	(void)as;
-	(void)vaddr;
-	(void)sz;
-	(void)readable;
-	(void)writeable;
-	(void)executable;
-	return EUNIMP;
-}
-
-int
-as_prepare_load(struct addrspace *as)
-{
-	/*
-	 * Write this.
-	 */
-
-	(void)as;
-	return 0;
-}
-
-int
-as_complete_load(struct addrspace *as)
-{
-	/*
-	 * Write this.
-	 */
-
-	(void)as;
-	return 0;
-}
-
-int
-as_define_stack(struct addrspace *as, vaddr_t *stackptr)
-{
-	/*
-	 * Write this.
-	 */
-
-	(void)as;
-
-	/* Initial user-level stack pointer */
-	*stackptr = USERSTACK;
-	
-	return 0;
-}
-

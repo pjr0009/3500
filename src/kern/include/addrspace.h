@@ -60,7 +60,9 @@ struct addrspace {
  *                (Normally called *after* as_complete_load().) Hands
  *                back the initial stack pointer for the new process.
  */
-
+#ifndef DUMBVM_STACKPAGES
+#define DUMBVM_STACKPAGES 12
+#endif
 struct addrspace *as_create(void);
 int               as_copy(struct addrspace *src, struct addrspace **ret);
 void              as_activate(struct addrspace *);
@@ -74,6 +76,8 @@ int               as_define_region(struct addrspace *as,
 int		  as_prepare_load(struct addrspace *as);
 int		  as_complete_load(struct addrspace *as);
 int               as_define_stack(struct addrspace *as, vaddr_t *initstackptr);
+int as_valid_read_addr(struct addrspace *as, vaddr_t *check_addr);
+int as_valid_write_addr(struct addrspace *as, vaddr_t *check_addr);
 
 /*
  * Functions in loadelf.c

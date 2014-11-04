@@ -15,7 +15,7 @@ main(int argc, char *argv[])
 #endif
 
 	/* Write this */
-
+	waitpid(getpid(), 0, 0);
 	(void)argc;
 	(void)argv;
 

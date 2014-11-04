@@ -374,6 +374,11 @@ thread.o: ${S}/thread/thread.c
 SRCS+=${S}/thread/thread.c
 OBJS+=thread.o
 
+filetable.o: ${S}/thread/filetable.c
+	${COMPILE.c} ${S}/thread/filetable.c
+SRCS+=${S}/thread/filetable.c
+OBJS+=filetable.o
+
 main.o: ${S}/main/main.c
 	${COMPILE.c} ${S}/main/main.c
 SRCS+=${S}/main/main.c
@@ -398,6 +403,61 @@ uio.o: ${S}/userprog/uio.c
 	${COMPILE.c} ${S}/userprog/uio.c
 SRCS+=${S}/userprog/uio.c
 OBJS+=uio.o
+
+open.o: ${S}/userprog/open.c
+	${COMPILE.c} ${S}/userprog/open.c
+SRCS+=${S}/userprog/open.c
+OBJS+=open.o
+
+close.o: ${S}/userprog/close.c
+	${COMPILE.c} ${S}/userprog/close.c
+SRCS+=${S}/userprog/close.c
+OBJS+=close.o
+
+read.o: ${S}/userprog/read.c
+	${COMPILE.c} ${S}/userprog/read.c
+SRCS+=${S}/userprog/read.c
+OBJS+=read.o
+
+write.o: ${S}/userprog/write.c
+	${COMPILE.c} ${S}/userprog/write.c
+SRCS+=${S}/userprog/write.c
+OBJS+=write.o
+
+_exit.o: ${S}/userprog/_exit.c
+	${COMPILE.c} ${S}/userprog/_exit.c
+SRCS+=${S}/userprog/_exit.c
+OBJS+=_exit.o
+
+execv.o: ${S}/userprog/execv.c
+	${COMPILE.c} ${S}/userprog/execv.c
+SRCS+=${S}/userprog/execv.c
+OBJS+=execv.o
+
+getpid.o: ${S}/userprog/getpid.c
+	${COMPILE.c} ${S}/userprog/getpid.c
+SRCS+=${S}/userprog/getpid.c
+OBJS+=getpid.o
+
+pid.o: ${S}/thread/pid.c
+	${COMPILE.c} ${S}/thread/pid.c
+SRCS+=${S}/thread/pid.c
+OBJS+=pid.o
+
+waitpid.o: ${S}/userprog/waitpid.c
+	${COMPILE.c} ${S}/userprog/waitpid.c
+SRCS+=${S}/userprog/waitpid.c
+OBJS+=waitpid.o
+
+fork.o: ${S}/userprog/fork.c
+	${COMPILE.c} ${S}/userprog/fork.c
+SRCS+=${S}/userprog/fork.c
+OBJS+=fork.o
+
+addrspace.o: ${S}/vm/addrspace.c
+	${COMPILE.c} ${S}/vm/addrspace.c
+SRCS+=${S}/vm/addrspace.c
+OBJS+=addrspace.o
 
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c
