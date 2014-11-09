@@ -12,6 +12,8 @@ int sys_getpid(pid_t *retval);
 pid_t sys_fork(struct trapframe *tf);
 int sys_execv();
 int sys_open(int *retval, const char *path, int oflag, int mode);
+int sys_read(int *retval, int index, void *buf, size_t nbytes);
+int sys_write(int *retval, int index, void *buf, size_t nbytes); 
 
 
 

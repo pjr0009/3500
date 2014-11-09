@@ -350,6 +350,22 @@ open.o: ../../userprog/open.c ../../include/types.h machine/types.h \
   ../../include/../arch/mips/include/spl.h ../../include/curthread.h \
   ../../include/thread.h machine/pcb.h ../../include/pid.h \
   ../../include/uio.h ../../include/vfs.h ../../include/vnode.h
+read.o: ../../userprog/read.c ../../include/types.h machine/types.h \
+  ../../include/kern/types.h ../../include/kern/errno.h \
+  ../../include/kern/unistd.h ../../include/lib.h machine/setjmp.h \
+  ../../include/filetable.h ../../include/../arch/mips/include/spl.h \
+  ../../include/addrspace.h ../../include/vm.h machine/vm.h opt-dumbvm.h \
+  ../../include/curthread.h ../../include/thread.h machine/pcb.h \
+  ../../include/pid.h ../../include/uio.h ../../include/vfs.h \
+  ../../include/vnode.h
+write.o: ../../userprog/write.c ../../include/types.h machine/types.h \
+  ../../include/kern/types.h ../../include/kern/errno.h \
+  ../../include/kern/unistd.h ../../include/lib.h machine/setjmp.h \
+  ../../include/filetable.h ../../include/../arch/mips/include/spl.h \
+  ../../include/addrspace.h ../../include/vm.h machine/vm.h opt-dumbvm.h \
+  ../../include/thread.h machine/pcb.h ../../include/pid.h \
+  ../../include/uio.h ../../include/vfs.h ../../include/vnode.h \
+  ../../include/synch.h ../../include/curthread.h
 arraytest.o: ../../test/arraytest.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
   ../../include/array.h ../../include/test.h

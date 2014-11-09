@@ -424,6 +424,16 @@ open.o: ${S}/userprog/open.c
 SRCS+=${S}/userprog/open.c
 OBJS+=open.o
 
+read.o: ${S}/userprog/read.c
+	${COMPILE.c} ${S}/userprog/read.c
+SRCS+=${S}/userprog/read.c
+OBJS+=read.o
+
+write.o: ${S}/userprog/write.c
+	${COMPILE.c} ${S}/userprog/write.c
+SRCS+=${S}/userprog/write.c
+OBJS+=write.o
+
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c
 SRCS+=${S}/test/arraytest.c

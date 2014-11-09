@@ -388,6 +388,9 @@ file      userprog/uio.c
 file      userprog/getpid.c
 file      userprog/fork.c
 file      userprog/open.c
+file      userprog/read.c
+file      userprog/write.c
+
 
 
 #
