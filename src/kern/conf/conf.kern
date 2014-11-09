@@ -365,6 +365,9 @@ file      thread/hardclock.c
 file      thread/synch.c
 file      thread/scheduler.c
 file      thread/thread.c
+file      thread/pid.c
+file      thread/filetable.c
+
 
 #
 # Main/toplevel stuff
@@ -382,6 +385,10 @@ file      main/menu.c
 file      userprog/loadelf.c
 file      userprog/runprogram.c
 file      userprog/uio.c
+file      userprog/getpid.c
+file      userprog/fork.c
+file      userprog/open.c
+
 
 #
 # Virtual memory system

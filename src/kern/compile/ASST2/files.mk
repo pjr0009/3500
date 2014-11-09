@@ -374,6 +374,16 @@ thread.o: ${S}/thread/thread.c
 SRCS+=${S}/thread/thread.c
 OBJS+=thread.o
 
+pid.o: ${S}/thread/pid.c
+	${COMPILE.c} ${S}/thread/pid.c
+SRCS+=${S}/thread/pid.c
+OBJS+=pid.o
+
+filetable.o: ${S}/thread/filetable.c
+	${COMPILE.c} ${S}/thread/filetable.c
+SRCS+=${S}/thread/filetable.c
+OBJS+=filetable.o
+
 main.o: ${S}/main/main.c
 	${COMPILE.c} ${S}/main/main.c
 SRCS+=${S}/main/main.c
@@ -398,6 +408,21 @@ uio.o: ${S}/userprog/uio.c
 	${COMPILE.c} ${S}/userprog/uio.c
 SRCS+=${S}/userprog/uio.c
 OBJS+=uio.o
+
+getpid.o: ${S}/userprog/getpid.c
+	${COMPILE.c} ${S}/userprog/getpid.c
+SRCS+=${S}/userprog/getpid.c
+OBJS+=getpid.o
+
+fork.o: ${S}/userprog/fork.c
+	${COMPILE.c} ${S}/userprog/fork.c
+SRCS+=${S}/userprog/fork.c
+OBJS+=fork.o
+
+open.o: ${S}/userprog/open.c
+	${COMPILE.c} ${S}/userprog/open.c
+SRCS+=${S}/userprog/open.c
+OBJS+=open.o
 
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c

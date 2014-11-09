@@ -40,6 +40,9 @@ all depend tags clean install:
 	(cd triplehuge && $(MAKE) $@)
 	(cd triplemat && $(MAKE) $@)
 	(cd triplesort && $(MAKE) $@)
+	#added
+	(cd getpidtest && $(MAKE) $@)
+
 
 # But not:
 #    malloctest     (no malloc/free until you write it)

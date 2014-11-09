@@ -58,9 +58,12 @@ thread_create(const char *name)
 	thread->t_vmspace = NULL;
 
 	thread->t_cwd = NULL;
+
+	thread->pid = new_pid();
 	
 	// If you add things to the thread structure, be sure to initialize
 	// them here.
+	thread->ft = ft_create();
 	
 	return thread;
 }
@@ -90,6 +93,7 @@ thread_destroy(struct thread *thread)
 
 	kfree(thread->t_name);
 	kfree(thread);
+	ft_destroy(thread->ft);
 }
 
 

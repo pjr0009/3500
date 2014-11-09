@@ -72,8 +72,22 @@ mips_syscall(struct trapframe *tf)
 		err = sys_reboot(tf->tf_a0);
 		break;
 
-	    /* Add stuff here */
- 
+		case SYS_fork:
+		err = sys_fork(tf);
+		break;
+
+		case SYS_execv:
+		// err = sys_execv();
+		break;
+		
+		case SYS_getpid: 
+		err = sys_getpid(&retval);
+		break;
+
+		case SYS_open:
+		err = sys_open(&retval, (char *) tf->tf_a0, (int) tf->tf_a1, (int) tf->tf_a2);
+		break;
+
 	    default:
 		kprintf("Unknown syscall %d\n", callno);
 		err = ENOSYS;
@@ -107,15 +121,11 @@ mips_syscall(struct trapframe *tf)
 	assert(curspl==0);
 }
 
-void
-md_forkentry(struct trapframe *tf)
-{
-	/*
-	 * This function is provided as a reminder. You need to write
-	 * both it and the code that calls it.
-	 *
-	 * Thus, you can trash it and do things another way if you prefer.
-	 */
-
-	(void)tf;
+void md_forkentry(struct trapframe *tf) {
+    assert(curspl == 0);
+    struct trapframe my_trap = *tf;
+    my_trap.tf_v0 = 0; //set return value to 0
+    my_trap.tf_epc += 4; // increment the program counter such that the forked process doesn't fork bomb
+    mips_usermode(&my_trap);
+    assert(0); //should not get here. mips_usermode does not return
 }
