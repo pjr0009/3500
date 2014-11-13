@@ -434,6 +434,11 @@ write.o: ${S}/userprog/write.c
 SRCS+=${S}/userprog/write.c
 OBJS+=write.o
 
+waitpid.o: ${S}/userprog/waitpid.c
+	${COMPILE.c} ${S}/userprog/waitpid.c
+SRCS+=${S}/userprog/waitpid.c
+OBJS+=waitpid.o
+
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c
 SRCS+=${S}/test/arraytest.c

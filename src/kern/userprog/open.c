@@ -18,7 +18,7 @@ int sys_open(int *retval, const char *path, int oflag, int mode){
     new_fd -> fdvnode = kmalloc(sizeof (struct vnode));
 	char *kpath = kstrdup(path);
 
-	int result = vfs_open(kpath, mode, &new_fd->fdvnode);
+	int result = vfs_open(kpath, oflag, &new_fd->fdvnode);
     if (result) {
         return result;
     }
@@ -28,6 +28,7 @@ int sys_open(int *retval, const char *path, int oflag, int mode){
 	//dont need to set num owners, it will be incremented in ft_add
     // new_fd->numOwners = 0; 
     result = ft_add(curthread->ft, new_fd);
+    kprintf("file desciptor: %d", result);
     *retval = result;
     return 0;
 }

@@ -33,6 +33,9 @@ struct thread {
 	 * code.
 	 */
 	struct addrspace *t_vmspace;
+	struct child_table *children;
+	struct thread *parent;
+	int exit_status;
 
 	/*
 	 * This is public because it isn't part of the thread system,

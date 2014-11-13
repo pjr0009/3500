@@ -12,6 +12,7 @@
 #include <scheduler.h>
 #include <addrspace.h>
 #include <vnode.h>
+#include <child_table.h>
 #include "opt-synchprobs.h"
 
 /* States a thread can be in. */
@@ -60,10 +61,14 @@ thread_create(const char *name)
 	thread->t_cwd = NULL;
 
 	thread->pid = new_pid();
+    thread->parent = NULL;
+	thread->children = NULL;
+	thread->exit_status = -1; //will be changed if _exit() is called
 	
 	// If you add things to the thread structure, be sure to initialize
 	// them here.
 	thread->ft = ft_create();
+	// thread->children = struct child_table;
 	
 	return thread;
 }

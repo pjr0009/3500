@@ -1,3 +1,5 @@
+#include <curthread.h>
+
 /*
  * Header file for synchronization primitives.
  */
@@ -50,10 +52,8 @@ void              sem_destroy(struct semaphore *);
 
 struct lock {
 	char *name;
-	int value;
-	struct thread *lockOwner;
-	// add what you need here
-	// (don't forget to mark things volatile as needed)
+	struct thread *owner; //the thread that aquires the lock
+	volatile int acquired; //weather the lock has been acquired or not
 };
 
 struct lock *lock_create(const char *name);
@@ -89,10 +89,17 @@ void         lock_destroy(struct lock *);
  * internally.
  */
 
+//a list structure for use in my CV implementation
+struct wait_list {
+    volatile int signal; //1 if the thread should be woken up, 0 otherwise
+    struct lock *lock;
+    struct wait_list *next;
+};
+ 
 struct cv {
 	char *name;
-	// add what you need here
-	// (don't forget to mark things volatile as needed)
+    struct wait_list *first; //next thread to be woken up
+    struct wait_list *last; //most recently added thread
 };
 
 struct cv *cv_create(const char *name);

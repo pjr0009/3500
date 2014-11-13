@@ -10,6 +10,7 @@
 #include <curthread.h>
 #include <machine/spl.h>
 
+
 ////////////////////////////////////////////////////////////
 //
 // Semaphore.
@@ -18,6 +19,8 @@ struct semaphore *
 sem_create(const char *namearg, int initial_count)
 {
 	struct semaphore *sem;
+
+	assert(initial_count >= 0);
 
 	sem = kmalloc(sizeof(struct semaphore));
 	if (sem == NULL) {
@@ -112,8 +115,9 @@ lock_create(const char *name)
 		return NULL;
 	}
 	
-  lock->value = 0;
-  lock->lockOwner = NULL;
+	lock->owner = NULL;
+	lock->acquired = 0;
+	
 	return lock;
 }
 
@@ -121,52 +125,46 @@ void
 lock_destroy(struct lock *lock)
 {
 	assert(lock != NULL);
-
-	kfree(lock->value);
+    assert(lock->acquired == 0); //lock should be released before it is destroyed
+	kfree(lock->name);
 	kfree(lock);
 }
 
 void
 lock_acquire(struct lock *lock)
 {
-  int spl;
-  assert(lock != NULL);
-	assert(in_interrupt==0);
-
-  spl = splhigh();
-  assert(!lock_do_i_hold(lock)); 
-  while (lock->value) {
-    thread_sleep(lock);
-  }
-  lock->lockOwner = curthread;
-  lock->value = 1;
-  splx(spl);
+    assert(lock != NULL);
+    int spl = splhigh(); //disable interrupts
+	while (lock->acquired) {
+	    assert(lock->owner != curthread); //if the thread tries to aquire the same lock twice without releasing first, throw error and quit
+	    thread_sleep(lock);
+	}
+	lock->acquired = 1;
+	lock->owner = curthread;
+	splx(spl); //re-enable interrupts
+    (void)lock;
 }
 
 void
 lock_release(struct lock *lock)
 {
-  assert(lock != NULL);
-  assert(lock->value);
-  assert(lock_do_i_hold(lock));
-
-  int spl;
-  spl = splhigh();
-  lock->value = 0;
-  lock->lockOwner = NULL;
-  thread_wakeup(lock);
-  splx(spl);
+    int spl = splhigh();
+    assert(lock != NULL);
+	assert(lock->owner == curthread);
+	assert(lock->acquired != 0); //cannot release a lock that has already been released
+	lock->acquired = 0;
+	thread_wakeup(lock);
+	splx(spl);
+    (void)lock;
 }
 
 int
 lock_do_i_hold(struct lock *lock)
 {
-  assert(lock != NULL);
-
-  if (!lock->value) return 0;
-
-  if (lock->lockOwner == curthread) return 1;
-  else return 0;
+    assert(lock != NULL);
+	return (lock->acquired && lock->owner == curthread);
+    (void)lock;
+    return 1;
 }
 
 ////////////////////////////////////////////////////////////
@@ -190,6 +188,8 @@ cv_create(const char *name)
 		return NULL;
 	}
 	
+    cv->first = NULL;
+    cv->last = NULL;
 	return cv;
 }
 
@@ -197,7 +197,7 @@ void
 cv_destroy(struct cv *cv)
 {
 	assert(cv != NULL);
-
+    assert(cv->first == NULL); //CV should not be destroyed if there are still threads waiting on the CV
 	kfree(cv->name);
 	kfree(cv);
 }
@@ -205,27 +205,82 @@ cv_destroy(struct cv *cv)
 void
 cv_wait(struct cv *cv, struct lock *lock)
 {
-  int spl;
-
-  lock_release(lock);
-  spl = splhigh();
-  thread_sleep(cv);
-  splx(spl);
-  lock_acquire(lock);
+	int spl = splhigh(); //disable interrupts
+	struct wait_list *sleeper;
+	sleeper = kmalloc(sizeof(struct wait_list));
+	if (sleeper == NULL) {
+	    panic("Out of memory!");
+	}
+	sleeper->signal = 0;
+	sleeper->lock = lock;
+	sleeper->next = NULL;
+	//add new sleeper to list of waiting threads
+	if (cv->first == NULL) {
+	    cv->first = sleeper;
+	} else {
+	    cv->last->next = sleeper;
+	}
+	cv->last = sleeper;
+	
+	lock_release(lock); //release the lock
+	
+	while (sleeper->signal == 0) {
+	    thread_sleep(cv);
+	}
+	
+	kfree(sleeper); //safe, since when cv_signal sets the signal value to 1, cv->first no longer points to it
+	lock_acquire(lock); //re-aquire the lock
+	splx(spl); //re-enable interrupts
+    (void)cv;
+    (void)lock;
 }
 
 void
 cv_signal(struct cv *cv, struct lock *lock)
 {
-  int spl = splhigh();
-  thread_wakeup(cv);
-  splx(spl);
+	int spl = splhigh(); //disable interrupts
+	struct wait_list *p = cv->first;
+	struct wait_list *prev;
+	while (p != NULL) {
+	    if (p->lock == lock) {
+	        p->signal = 1; //set the next waiting thread to be woken up
+	        if (p == cv->first) {
+	            cv->first = cv->first->next; //move the rest of the threads up in line
+	        } else {
+	            prev->next = p->next; //remove this link from the list
+	        }
+	        break;
+	    } else {
+	        prev = p;
+	        p = p->next;
+	    }
+	}
+	thread_wakeup(cv);
+	splx(spl); //re-enable interrupts
+    (void)cv;
+    (void)lock;
 }
 
 void
 cv_broadcast(struct cv *cv, struct lock *lock)
 {
-  int spl = splhigh();
-  thread_wakeup(cv);
-  splx(spl);
+	int spl = splhigh(); //disable interrupts
+	struct wait_list *p = cv->first;
+	struct wait_list *prev;
+	while (p != NULL) {
+	    if (p->lock == lock) {
+	        p->signal = 1; //set the next waiting thread to be woken up
+	        if (p == cv->first) {
+	            cv->first = cv->first->next; //move the rest of the threads up in line
+	        } else {
+	            prev->next = p->next; //remove this link from the list
+	        }
+	    }
+	    prev = p;
+	    p = p->next;
+	}
+	thread_wakeup(cv);
+	splx(spl); //re-enable interrupts
+	(void)cv;
+	(void)lock;
 }
