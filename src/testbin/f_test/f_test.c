@@ -144,9 +144,9 @@ big_file(int size)
 
 
 	close(fileid);
-	if (remove(BIGFILE_NAME)) {
-		err(1, "[BIGFILE]: %s: remove", BIGFILE_NAME);
-	}
+	// if (remove(BIGFILE_NAME)) {
+	// 	err(1, "[BIGFILE]: %s: remove", BIGFILE_NAME);
+	// }
 
 	printf("\n[BIGFILE] : Success!\n");
 }
@@ -194,9 +194,9 @@ concur(void)
 	dowait(r2);
 	dowait(w1);
 
-	if (remove(FNAME)) {
-		err(1, "[CONCUR]: %s: remove", FNAME);
-	}
+	// if (remove(FNAME)) {
+	// 	err(1, "[CONCUR]: %s: remove", FNAME);
+	// }
 	 
 	printf("[CONCUR] Done!\n");
 }
@@ -296,12 +296,12 @@ main(int argc, char * argv[])
 		big_file(BIGFILE_SIZE);
 	}
 	 
-	if (tv & RUNDIRTEST) {
-		printf("[DIRTEST] : Run #1\n");
-		dir_test(DIR_DEPTH);
-		printf("[DIRTEST] : Run #2\n");
-		dir_test(DIR_DEPTH);
-	}
+	// if (tv & RUNDIRTEST) {
+	// 	printf("[DIRTEST] : Run #1\n");
+	// 	dir_test(DIR_DEPTH);
+	// 	printf("[DIRTEST] : Run #2\n");
+	// 	dir_test(DIR_DEPTH);
+	// }
 	 
 	if (tv & RUNCONCUR) {
 		printf("[CONCUR]\n");

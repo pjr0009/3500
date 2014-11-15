@@ -221,8 +221,10 @@ int ft_remove(struct filetable* ft, int fti) {
         }
         splx(spl);
         array_setguy(ft->filedescriptor, fti, NULL);
+        return 1;
+    } else {
+        return -1;
     }
-    return 1;
 }
 
 /*

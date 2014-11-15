@@ -86,8 +86,6 @@ mips_syscall(struct trapframe *tf)
 
 		case SYS_open:
 		err = sys_open(&retval, (char *) tf->tf_a0, (int) tf->tf_a1, (int) tf->tf_a2);
-		kprintf("called here%d", retval);
-
 		break;
 
         case SYS_read:
@@ -97,8 +95,13 @@ mips_syscall(struct trapframe *tf)
         case SYS_write:
         err = sys_write(&retval, tf->tf_a0, (void*) tf->tf_a1, tf->tf_a2);
         break;
+        
         case SYS_waitpid:
         err = sys_waitpid((int) tf->tf_a0, (int) tf->tf_a1, (int) tf->tf_a2);
+        break;
+
+        case SYS_close:
+        err = sys_close(&retval, tf -> tf_a0);
         break;
 
 	    default:

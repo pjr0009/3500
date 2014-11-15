@@ -381,6 +381,10 @@ waitpid.o: ../../userprog/waitpid.c machine/spl.h \
   ../../include/filetable.h ../../include/curthread.h ../../include/vm.h \
   machine/vm.h ../../include/kern/errno.h ../../include/lib.h \
   ../../include/addrspace.h opt-dumbvm.h
+close.o: ../../userprog/close.c ../../include/types.h machine/types.h \
+  ../../include/kern/types.h ../../include/filetable.h \
+  ../../include/curthread.h ../../include/thread.h machine/pcb.h \
+  machine/setjmp.h ../../include/pid.h
 arraytest.o: ../../test/arraytest.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
   ../../include/array.h ../../include/test.h
