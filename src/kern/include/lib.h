@@ -105,7 +105,6 @@ char *kstrdup(const char *);
 char *strchr(const char *, int);
 char *strrchr(const char *, int);
 char *strtok_r(char *buf, const char *seps, char **context);
-DEBUG("C string debug");
 void *memcpy(void *, const void *, size_t);
 void *memmove(void *, const void *, size_t);
 void bzero(void *, size_t);
@@ -115,7 +114,6 @@ int snprintf(char *buf, size_t maxlen, const char *fmt, ...) __PF(3,4);
 
 const char *strerror(int errcode);
 
-DEBUG("SET / JUMP functionality");
 /*
  * setjmp/longjmp functionality.
  */
@@ -129,7 +127,6 @@ void putch(int ch);
 int getch(void);
 void beep(void);
 
-DEBUG("Higher-level consoile output debug");
 /*
  * Higher-level console output.
  *
@@ -147,7 +144,6 @@ void panic(const char *fmt, ...) __PF(1,2);
 void kgets(char *buf, size_t maxbuflen);
 
 void kprintf_bootstrap(void);
-DEBUG("BYTE SWAP DEBUG");
 /*
  * Byte swap functions for the kernel.
  */
@@ -186,15 +182,8 @@ u_int64_t htonll(u_int64_t);
  *
  * These functions are machine-dependent.
  */
-DEBUG("copyin debug"); 
-int copyin(const_userptr_t usersrc, void *dest, size_t len);
-DEBUG("copyout debug");
-int copyout(const void *src, userptr_t userdest, size_t len);
-DEBUG("copyinstr debug");
-int copyinstr(const_userptr_t usersrc, char *dest, size_t len, size_t *got);
-DEBUG("copyoutstr debug");
-int copyoutstr(const char *src, userptr_t userdest, size_t len, size_t *got);
-DEBUG("simpletiming hooks debug");
+
+
 /*
  * Simple timing hooks.
  *
@@ -205,7 +194,6 @@ DEBUG("simpletiming hooks debug");
  */
 extern int lbolt;
 void clocksleep(int seconds);
-DEBUG("other miscellaneous stuff debug");
 /*
  * Other miscellaneous stuff
  */

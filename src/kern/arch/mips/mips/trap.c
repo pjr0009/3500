@@ -120,6 +120,7 @@ mips_trap(struct trapframe *tf)
 		}
 		break;
 	case EX_TLBL:
+		kprintf("Fuck face");
 		if (vm_fault(VM_FAULT_READ, tf->tf_vaddr)==0) {
 			goto done;
 		}
