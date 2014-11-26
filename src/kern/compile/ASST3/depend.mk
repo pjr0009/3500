@@ -310,6 +310,17 @@ uio.o: ../../userprog/uio.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
   ../../include/uio.h ../../include/thread.h machine/pcb.h \
   ../../include/curthread.h
+lpage.o: ../../vm/lpage.c ../../include/lpage.h ../../include/types.h \
+  machine/types.h ../../include/kern/types.h machine/vm.h \
+  ../../include/kern/errno.h ../../include/lib.h machine/setjmp.h \
+  ../../include/thread.h machine/pcb.h ../../include/addrspace.h \
+  ../../include/vm.h opt-dumbvm.h
+vm.o: ../../vm/vm.c ../../include/types.h machine/types.h \
+  ../../include/kern/types.h ../../include/kern/errno.h \
+  ../../include/lib.h machine/setjmp.h ../../include/thread.h \
+  machine/pcb.h ../../include/curthread.h ../../include/addrspace.h \
+  ../../include/vm.h machine/vm.h opt-dumbvm.h machine/spl.h \
+  machine/tlb.h
 arraytest.o: ../../test/arraytest.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
   ../../include/array.h ../../include/test.h

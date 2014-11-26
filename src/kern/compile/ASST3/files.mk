@@ -404,6 +404,16 @@ uio.o: ${S}/userprog/uio.c
 SRCS+=${S}/userprog/uio.c
 OBJS+=uio.o
 
+lpage.o: ${S}/vm/lpage.c
+	${COMPILE.c} ${S}/vm/lpage.c
+SRCS+=${S}/vm/lpage.c
+OBJS+=lpage.o
+
+vm.o: ${S}/vm/vm.c
+	${COMPILE.c} ${S}/vm/vm.c
+SRCS+=${S}/vm/vm.c
+OBJS+=vm.o
+
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c
 SRCS+=${S}/test/arraytest.c

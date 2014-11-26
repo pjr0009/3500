@@ -391,6 +391,9 @@ file      userprog/uio.c
 
 optofffile dumbvm   vm/addrspace.c
 
+file vm/lpage.c
+file vm/vm.c
+
 #
 # Network
 # (nothing here yet)
