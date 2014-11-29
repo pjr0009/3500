@@ -5,8 +5,17 @@
 #include <curthread.h>
 #include <addrspace.h>
 #include <vm.h>
+#include <coremap.h>
 #include <machine/spl.h>
 #include <machine/tlb.h>
+
+
+
+void vm_bootstrap(void) {
+	coremap_bootstrap();
+}
+
+
 
 int vm_fault(int faulttype, vaddr_t faultaddress){
 	DEBUG(DB_VM, "vm: fault: 0x%x\n", faultaddress);
@@ -14,7 +23,7 @@ int vm_fault(int faulttype, vaddr_t faultaddress){
     int spl;
 	spl = splhigh();
     faultaddress &= PAGE_FRAME;
-    addrspace * as = curthread -> t_vmspace;
+    struct addrspace * as = curthread -> t_vmspace;
 
 	switch (faulttype) {
 	

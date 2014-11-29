@@ -414,6 +414,11 @@ vm.o: ${S}/vm/vm.c
 SRCS+=${S}/vm/vm.c
 OBJS+=vm.o
 
+coremap.o: ${S}/vm/coremap.c
+	${COMPILE.c} ${S}/vm/coremap.c
+SRCS+=${S}/vm/coremap.c
+OBJS+=coremap.o
+
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c
 SRCS+=${S}/test/arraytest.c

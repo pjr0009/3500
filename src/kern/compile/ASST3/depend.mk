@@ -319,8 +319,14 @@ vm.o: ../../vm/vm.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/kern/errno.h \
   ../../include/lib.h machine/setjmp.h ../../include/thread.h \
   machine/pcb.h ../../include/curthread.h ../../include/addrspace.h \
-  ../../include/vm.h machine/vm.h opt-dumbvm.h machine/spl.h \
-  machine/tlb.h
+  ../../include/vm.h machine/vm.h opt-dumbvm.h ../../include/coremap.h \
+  ../../include/lpage.h machine/spl.h machine/tlb.h
+coremap.o: ../../vm/coremap.c ../../include/coremap.h \
+  ../../include/types.h machine/types.h ../../include/kern/types.h \
+  ../../include/kern/errno.h ../../include/lib.h machine/setjmp.h \
+  ../../include/thread.h machine/pcb.h ../../include/curthread.h \
+  ../../include/addrspace.h ../../include/vm.h machine/vm.h opt-dumbvm.h \
+  ../../include/lpage.h machine/spl.h machine/tlb.h
 arraytest.o: ../../test/arraytest.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
   ../../include/array.h ../../include/test.h

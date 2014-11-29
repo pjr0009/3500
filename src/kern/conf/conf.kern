@@ -393,7 +393,7 @@ optofffile dumbvm   vm/addrspace.c
 
 file vm/lpage.c
 file vm/vm.c
-
+file vm/coremap.c
 #
 # Network
 # (nothing here yet)
