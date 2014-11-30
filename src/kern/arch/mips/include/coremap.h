@@ -11,8 +11,10 @@
 #include <lpage.h>
 #include <machine/spl.h>
 #include <machine/tlb.h>
+#include <synch.h>
 
-
+#define COREMAP_TO_PADDR(i)	(((paddr_t)PAGE_SIZE)*((i)+base_coremap_page))
+#define PADDR_TO_COREMAP(page)	(((page)/PAGE_SIZE) - base_coremap_page)
 
 // state of the coremap entry, spefices if it should ever be swapped out or written to disk
 typedef enum {
@@ -37,6 +39,8 @@ static u_int32_t base_coremap_page;
 
 // coremap array
 static struct coremap_entry *coremap;
+static struct semaphore *global_paging_lock;
+static int vm_bootstrapped;
 
 /* pages allocated to the kernel */ 
 static u_int32_t num_coremap_kernel; 
@@ -44,8 +48,17 @@ static u_int32_t num_coremap_kernel;
 /* pages allocated to user progs */ 
 static u_int32_t num_coremap_user;
 
+
 //functions
 void coremap_bootstrap(void);
+
+paddr_t coremap_alloc_multipages(int npages);
+paddr_t coremap_alloc_page(struct lpage *lp, int dopin);
+
+void  coremap_free_multipages(int npages);
+void  coremap_free_page();
+
+
 
 
 #endif

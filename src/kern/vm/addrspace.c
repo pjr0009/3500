@@ -25,6 +25,12 @@ as_create(void)
 	return as;
 }
 
+
+int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
+	
+};
+
+
 int
 as_copy(struct addrspace *old, struct addrspace **ret)
 {

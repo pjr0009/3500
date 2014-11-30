@@ -209,6 +209,11 @@ copyinout.o: ${S}/lib/copyinout.c
 SRCS+=${S}/lib/copyinout.c
 OBJS+=copyinout.o
 
+coremap.o: ${S}/arch/mips/mips/coremap.c
+	${COMPILE.c} ${S}/arch/mips/mips/coremap.c
+SRCS+=${S}/arch/mips/mips/coremap.c
+OBJS+=coremap.o
+
 array.o: ${S}/lib/array.c
 	${COMPILE.c} ${S}/lib/array.c
 SRCS+=${S}/lib/array.c
@@ -413,11 +418,6 @@ vm.o: ${S}/vm/vm.c
 	${COMPILE.c} ${S}/vm/vm.c
 SRCS+=${S}/vm/vm.c
 OBJS+=vm.o
-
-coremap.o: ${S}/vm/coremap.c
-	${COMPILE.c} ${S}/vm/coremap.c
-SRCS+=${S}/vm/coremap.c
-OBJS+=coremap.o
 
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c
