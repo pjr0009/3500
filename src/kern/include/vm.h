@@ -34,6 +34,8 @@ vaddr_t page_alloc(int npages);
 void free_kpages(vaddr_t addr);
 void page_free(vaddr_t addr);
 
+struct vm_object *vm_object_create (size_t npages);
+
 struct vm_object{
 	struct array *lpages;
 	int readable:1;

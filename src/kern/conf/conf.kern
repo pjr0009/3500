@@ -393,6 +393,7 @@ optofffile dumbvm   vm/addrspace.c
 
 file vm/lpage.c
 file vm/vm.c
+file vm/vm_object.c
 #
 # Network
 # (nothing here yet)

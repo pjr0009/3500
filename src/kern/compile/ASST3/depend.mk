@@ -334,6 +334,10 @@ vm.o: ../../vm/vm.c ../../include/types.h machine/types.h \
   ../../include/vm.h machine/vm.h opt-dumbvm.h ../../include/array.h \
   machine/coremap.h ../../include/lpage.h machine/spl.h machine/tlb.h \
   ../../include/synch.h
+vm_object.o: ../../vm/vm_object.c ../../include/vm.h \
+  ../../include/types.h machine/types.h ../../include/kern/types.h \
+  machine/vm.h ../../include/kern/errno.h ../../include/lib.h \
+  machine/setjmp.h ../../include/array.h
 arraytest.o: ../../test/arraytest.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
   ../../include/array.h ../../include/test.h

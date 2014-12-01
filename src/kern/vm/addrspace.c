@@ -86,24 +86,58 @@ as_activate(struct addrspace *as)
  * moment, these are ignored. When you write the VM system, you may
  * want to implement them.
  */
-int
-as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,
+int as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,
 		 int readable, int writeable, int executable)
 {
+	DEBUG(DB_VM, "\nCREATING ADDRESS SPACE REGION FOR TEXT/CODE SEGMENT\n");
 	struct vm_object *vmobj;
+	int i, result;
 	/* align base address */
 	vaddr &= PAGE_FRAME;
 
 	/* size may not be */
 	sz = ROUNDUP(sz, PAGE_SIZE);
-	DEBUG(DB_VM, "\nDEFINING ADDRESS SPACE REGION OF SIZE: %d\n", sz);
-	(void)as;
-	(void)vaddr;
-	(void)sz;
-	(void)readable;
-	(void)writeable;
-	(void)executable;
-	return EUNIMP;
+
+	/*
+	 * Check for overlaps.
+	 */
+	// for (i = 0; i < array_getnum(as->as_objects); i++) {
+	// 	vaddr_t bot, top;
+		
+	// 	vmo = vm_object_array_get(as->as_objects, i);
+	// 	KASSERT(vmo != NULL);
+	// 	bot = vmo->vmo_base;
+	// 	top = bot + PAGE_SIZE * lpage_array_num(vmo->vmo_lpages);
+
+	// 	/* Check guard band, if any */
+	// 	KASSERT(bot >= vmo->vmo_lower_redzone);
+	// 	bot = bot - vmo->vmo_lower_redzone;
+
+	// 	if (check_vaddr+sz > bot && check_vaddr < top) {
+	// 		/* overlap */
+	// 		return EINVAL;
+	// 	}
+	// }
+
+
+	/* Create a new vmo. All pages are marked zerofilled. */
+	vmobj = vm_object_create(sz/PAGE_SIZE);
+	if (vmobj == NULL) {
+		return ENOMEM;
+	}
+	// vmo->vmo_base = vaddr;
+	// vmo->vmo_lower_redzone = lower_redzone;
+
+	/* Add it to the parent address space. */
+	array_add(as->as_objects, vmobj);
+	// if (result) {
+	// 	vm_object_destroy(as, vmo);
+	// 	return result;
+	// }
+
+	/* Done */
+	return 0;
+	
 }
 
 int
