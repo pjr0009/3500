@@ -115,16 +115,19 @@ mips_trap(struct trapframe *tf)
 	 */
 	switch (code) {
 	case EX_MOD:
+		DEBUG(DB_VM, "\nTLB READ MISS FOR VADDR: %d", tf -> tf_vaddr);
 		if (vm_fault(VM_FAULT_READONLY, tf->tf_vaddr)==0) {
 			goto done;
 		}
 		break;
 	case EX_TLBL:
+		DEBUG(DB_VM, "\nTLB READ MISS FOR VADDR: %d", tf -> tf_vaddr);
 		if (vm_fault(VM_FAULT_READ, tf->tf_vaddr)==0) {
 			goto done;
 		}
 		break;
 	case EX_TLBS:
+		DEBUG(DB_VM, "\nTLB WRITE MISS FOR VADDR: %d", tf -> tf_vaddr);
 		if (vm_fault(VM_FAULT_WRITE, tf->tf_vaddr)==0) {
 			goto done;
 		}

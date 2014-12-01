@@ -3,8 +3,12 @@
 
 #include <vm.h>
 #include "opt-dumbvm.h"
+#include <array.h>
 
 struct vnode;
+
+
+
 
 /* 
  * Address space - data structure associated with the virtual memory
@@ -24,6 +28,8 @@ struct addrspace {
 	paddr_t as_stackpbase;
 #else
 	/* Put stuff here for your VM system */
+	// array of vm objects
+	struct array *as_objects;
 #endif
 };
 

@@ -18,7 +18,7 @@ void vm_bootstrap(void) {
 
 
 int vm_fault(int faulttype, vaddr_t faultaddress){
-	// DEBUG(DB_VM, "vm: fault: 0x%x\n", faultaddress);
+	DEBUG(DB_VM, "vm: fault: 0x%x\n", faultaddress);
 
     int spl;
 	spl = splhigh();

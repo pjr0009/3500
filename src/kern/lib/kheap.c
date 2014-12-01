@@ -2,6 +2,7 @@
 #include <lib.h>
 #include <vm.h>
 #include <machine/spl.h>
+#include <machine/coremap.h>
 
 static
 void
@@ -545,6 +546,10 @@ subpage_kfree(void *ptr)
 void *
 kmalloc(size_t sz)
 {
+	// temporary
+	if(vm_bootstrapped){
+		DEBUG(DB_VM, "\n Calling malloc for size %d", sz);
+	}
 	if (sz>=LARGEST_SUBPAGE_SIZE) {
 		unsigned long npages;
 		vaddr_t address;

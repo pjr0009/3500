@@ -3,7 +3,7 @@
 #include <lib.h>
 #include <addrspace.h>
 #include <vm.h>
-
+#include <lpage.h>
 /*
  * Note! If OPT_DUMBVM is set, as is the case until you start the VM
  * assignment, this file is not compiled or linked or in any way
@@ -17,10 +17,15 @@ as_create(void)
 	if (as==NULL) {
 		return NULL;
 	}
+	// create array of page tables
+	as -> as_objects = (struct vm_object*)array_create();
+	DEBUG(DB_VM, "\nArray allocated for address space objects\n");
 
-	/*
-	 * Initialize as needed.
-	 */
+	// verify as_objects array was created successfully
+	if (as->as_objects == NULL) {
+		kfree(as);
+		return NULL;
+	}
 
 	return as;
 }
@@ -85,10 +90,13 @@ int
 as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,
 		 int readable, int writeable, int executable)
 {
-	/*
-	 * Write this.
-	 */
+	struct vm_object *vmobj;
+	/* align base address */
+	vaddr &= PAGE_FRAME;
 
+	/* size may not be */
+	sz = ROUNDUP(sz, PAGE_SIZE);
+	DEBUG(DB_VM, "\nDEFINING ADDRESS SPACE REGION OF SIZE: %d\n", sz);
 	(void)as;
 	(void)vaddr;
 	(void)sz;

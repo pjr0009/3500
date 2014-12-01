@@ -34,5 +34,12 @@ vaddr_t page_alloc(int npages);
 void free_kpages(vaddr_t addr);
 void page_free(vaddr_t addr);
 
+struct vm_object{
+	struct array *lpages;
+	int readable:1;
+	int writeable:1;
+	int executable:1;	
+};
+
 
 #endif /* _VM_H_ */

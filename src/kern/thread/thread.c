@@ -244,7 +244,9 @@ thread_fork(const char *name,
 	}
 
 	/* Allocate a stack */
+	DEBUG(DB_VM, "\nCalling malloc for size %d", STACK_SIZE);
 	newguy->t_stack = kmalloc(STACK_SIZE);
+
 	if (newguy->t_stack==NULL) {
 		kfree(newguy->t_name);
 		kfree(newguy);
