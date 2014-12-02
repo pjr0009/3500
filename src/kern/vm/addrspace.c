@@ -4,15 +4,15 @@
 #include <addrspace.h>
 #include <vm.h>
 #include <lpage.h>
+#include <machine/coremap.h>
+
 /*
  * Note! If OPT_DUMBVM is set, as is the case until you start the VM
  * assignment, this file is not compiled or linked or in any way
  * used. The cheesy hack versions in dumbvm.c are used instead.
  */
 
-struct addrspace *
-as_create(void)
-{
+struct addrspace *as_create(void) {
 	struct addrspace *as = kmalloc(sizeof(struct addrspace));
 	if (as==NULL) {
 		return NULL;
@@ -30,9 +30,9 @@ as_create(void)
 	return as;
 }
 
-
+\
 int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
-	DEBUG(DB_VM, "\nENTERING AS FAULT FOR VADDR %d\n", faultaddress);
+	// DEBUG(DB_VM, "\nENTERING AS FAULT FOR VADDR %d\n", faultaddress);
 	struct vm_object *vmo, *fault_vmo=NULL;
 	int top, bottom, i;
 	for (i = 0; i < array_getnum(as->as_objects); i++) {
@@ -45,18 +45,18 @@ int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
 		}
 	}
 	if(fault_vmo){
-		DEBUG(DB_VM, "\nFOUND VM OBJECT CONTAINING VM FAULT FOR VADDR %d\n", faultaddress);
+		// DEBUG(DB_VM, "\nFOUND VM OBJECT CONTAINING VM FAULT FOR VADDR %d\n", faultaddress);
 		int lpage_index = (faultaddress - fault_vmo -> base_address) / PAGE_SIZE;	
-		struct lpage* lp = array_getguy(fault_vmo -> lpages, lpage_index);
+		lpage* lp = array_getguy(fault_vmo -> lpages, lpage_index);
 		if(lp == NULL){
-			//create lp
-			return 1;
-		} else{
-			// return
-			return 2;
+			lp = lpage_zerofill();
+			array_setguy(fault_vmo -> lpages, lp, faultaddress);
 		}
-	}else{
-		return -1;
+
+		return lpage_fault(lp, as, faulttype, faultaddress);
+	
+	} else{
+		return EFAULT;
 	}
 };
 

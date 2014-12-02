@@ -137,4 +137,18 @@ paddr_t coremap_alloc_page(struct lpage *lp, int dopin){
 
 void coremap_free_page(){
 
-};
+}
+
+paddr_t coremap_allocuser(struct lpage *lp) {
+	// KASSERT(!curthread->t_in_interrupt);
+	return coremap_alloc_page(lp, 1 /* dopin */);
+}
+
+void coremap_zero_page(paddr_t paddr){
+	vaddr_t va;
+
+	// KASSERT(coremap_pageispinned(paddr));
+
+	va = PADDR_TO_KVADDR(paddr);
+	bzero((char *)va, PAGE_SIZE);
+}

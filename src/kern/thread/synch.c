@@ -112,8 +112,8 @@ lock_create(const char *name)
 		return NULL;
 	}
 	
-	// add stuff here as needed
-	
+  lock->value = 0;
+  lock->lockOwner = NULL;
 	return lock;
 }
 
@@ -122,36 +122,51 @@ lock_destroy(struct lock *lock)
 {
 	assert(lock != NULL);
 
-	// add stuff here as needed
-	
-	kfree(lock->name);
+	kfree(lock->value);
 	kfree(lock);
 }
 
 void
 lock_acquire(struct lock *lock)
 {
-	// Write this
+  int spl;
+  assert(lock != NULL);
+	assert(in_interrupt==0);
 
-	(void)lock;  // suppress warning until code gets written
+  spl = splhigh();
+  assert(!lock_do_i_hold(lock)); 
+  while (lock->value) {
+    thread_sleep(lock);
+  }
+  lock->lockOwner = curthread;
+  lock->value = 1;
+  splx(spl);
 }
 
 void
 lock_release(struct lock *lock)
 {
-	// Write this
+  assert(lock != NULL);
+  assert(lock->value);
+  assert(lock_do_i_hold(lock));
 
-	(void)lock;  // suppress warning until code gets written
+  int spl;
+  spl = splhigh();
+  lock->value = 0;
+  lock->lockOwner = NULL;
+  thread_wakeup(lock);
+  splx(spl);
 }
 
 int
 lock_do_i_hold(struct lock *lock)
 {
-	// Write this
+  assert(lock != NULL);
 
-	(void)lock;  // suppress warning until code gets written
+  if (!lock->value) return 0;
 
-	return 1;    // dummy until code gets written
+  if (lock->lockOwner == curthread) return 1;
+  else return 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -175,8 +190,6 @@ cv_create(const char *name)
 		return NULL;
 	}
 	
-	// add stuff here as needed
-	
 	return cv;
 }
 
@@ -185,8 +198,6 @@ cv_destroy(struct cv *cv)
 {
 	assert(cv != NULL);
 
-	// add stuff here as needed
-	
 	kfree(cv->name);
 	kfree(cv);
 }
@@ -194,23 +205,27 @@ cv_destroy(struct cv *cv)
 void
 cv_wait(struct cv *cv, struct lock *lock)
 {
-	// Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
+  int spl;
+
+  lock_release(lock);
+  spl = splhigh();
+  thread_sleep(cv);
+  splx(spl);
+  lock_acquire(lock);
 }
 
 void
 cv_signal(struct cv *cv, struct lock *lock)
 {
-	// Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
+  int spl = splhigh();
+  thread_wakeup(cv);
+  splx(spl);
 }
 
 void
 cv_broadcast(struct cv *cv, struct lock *lock)
 {
-	// Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
+  int spl = splhigh();
+  thread_wakeup(cv);
+  splx(spl);
 }

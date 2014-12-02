@@ -59,7 +59,7 @@ vaddr_t alloc_kpages(int npages){
 		pa = coremap_alloc_multipages(npages);
 	}
 	else {
-		pa = coremap_alloc_page(NULL, 1);
+		pa = coremap_alloc_page(NULL, 0); // dont pin because kernal space allocation
 	}
 	if(pa == INVALID_PADDR){
 		return 0;

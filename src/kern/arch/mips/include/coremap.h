@@ -58,7 +58,7 @@ paddr_t coremap_alloc_page(struct lpage *lp, int dopin);
 void  coremap_free_multipages(int npages);
 void  coremap_free_page();
 
-
-
+paddr_t coremap_allocuser(struct lpage *lp);
+void coremap_zero_page(paddr_t paddr);
 
 #endif
