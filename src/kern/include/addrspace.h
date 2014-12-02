@@ -30,6 +30,8 @@ struct addrspace {
 	/* Put stuff here for your VM system */
 	// array of vm objects
 	struct array *as_objects;
+	vaddr_t sbrk_value;
+	vaddr_t max_brk_value;
 #endif
 };
 

@@ -32,8 +32,35 @@ as_create(void)
 
 
 int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
-	
+	DEBUG(DB_VM, "\nENTERING AS FAULT FOR VADDR %d\n", faultaddress);
+	struct vm_object *vmo, *fault_vmo=NULL;
+	int top, bottom, i;
+	for (i = 0; i < array_getnum(as->as_objects); i++) {
+		vmo = array_getguy(as->as_objects, i);
+		bottom = vmo -> base_address; 
+		top = bottom + PAGE_SIZE * array_getnum(vmo->lpages);
+		if (bottom <= faultaddress <= top) {
+			fault_vmo = vmo; 
+			break;
+		}
+	}
+	if(fault_vmo){
+		DEBUG(DB_VM, "\nFOUND VM OBJECT CONTAINING VM FAULT FOR VADDR %d\n", faultaddress);
+		int lpage_index = (faultaddress - fault_vmo -> base_address) / PAGE_SIZE;	
+		struct lpage* lp = array_getguy(fault_vmo -> lpages, lpage_index);
+		if(lp == NULL){
+			//create lp
+			return 1;
+		} else{
+			// return
+			return 2;
+		}
+	}else{
+		return -1;
+	}
 };
+
+
 
 
 int
@@ -86,12 +113,16 @@ as_activate(struct addrspace *as)
  * moment, these are ignored. When you write the VM system, you may
  * want to implement them.
  */
+
+ // set up a segment of virtual address space for a program to run
+ // gives a place to load the elf format file into the allocated chunk user address space
 int as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,
 		 int readable, int writeable, int executable)
 {
-	DEBUG(DB_VM, "\nCREATING ADDRESS SPACE REGION FOR TEXT/CODE SEGMENT\n");
+	DEBUG(DB_VM, "\nCREATING ADDRESS SPACE REGION FOR STACK/TEXT/CODE SEGMENT\n");
 	struct vm_object *vmobj;
 	int i, result;
+	
 	/* align base address */
 	vaddr &= PAGE_FRAME;
 
@@ -122,6 +153,13 @@ int as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz,
 
 	/* Create a new vmo. All pages are marked zerofilled. */
 	vmobj = vm_object_create(sz/PAGE_SIZE);
+
+	// set up page table permissions, e.g. data segment may be read only, code segment needs to be executable, etc...
+	vmobj -> readable = readable;
+	vmobj -> writeable = writeable;
+	vmobj -> executable = executable;
+	vmobj -> base_address = vaddr;
+
 	if (vmobj == NULL) {
 		return ENOMEM;
 	}
@@ -169,8 +207,11 @@ as_define_stack(struct addrspace *as, vaddr_t *stackptr)
 	 * Write this.
 	 */
 
-	(void)as;
 
+	int result = as_define_region(as, USERSTACK, USERSTACKSIZE, 1, 1, 0);
+	if(result){
+		return result;
+	}
 	/* Initial user-level stack pointer */
 	*stackptr = USERSTACK;
 	

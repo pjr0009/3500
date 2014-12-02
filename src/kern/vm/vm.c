@@ -18,7 +18,7 @@ void vm_bootstrap(void) {
 
 
 int vm_fault(int faulttype, vaddr_t faultaddress){
-	DEBUG(DB_VM, "vm: fault: 0x%x\n", faultaddress);
+	DEBUG(DB_VM, "\nvm: fault: 0x%x\n", faultaddress);
 
     int spl;
 	spl = splhigh();
@@ -37,7 +37,8 @@ int vm_fault(int faulttype, vaddr_t faultaddress){
 	    	break;
 
 	    case VM_FAULT_WRITE:
-			panic("vm: got VM_FAULT_WRITE\n");
+	    	DEBUG(DB_VM, "\nWRITE VM FAULT\n");
+	    	as_fault(faulttype, faultaddress, as);
 			break;
 	    
 	    default:

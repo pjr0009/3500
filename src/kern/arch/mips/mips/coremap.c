@@ -74,6 +74,9 @@ static paddr_t getppages(unsigned long npages)
 	return addr;
 }
 
+
+// this works because we return the physical address. the coremap is an array indexed
+// by its physical address whose value returns the virtual address
 paddr_t coremap_alloc_page(struct lpage *lp, int dopin){
 	
 	if(vm_bootstrapped != 1){

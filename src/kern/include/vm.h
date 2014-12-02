@@ -21,6 +21,7 @@
 
 
 
+
 /* Initialization function */
 void vm_bootstrap(void);
 
@@ -38,6 +39,7 @@ struct vm_object *vm_object_create (size_t npages);
 
 struct vm_object{
 	struct array *lpages;
+	vaddr_t base_address;
 	int readable:1;
 	int writeable:1;
 	int executable:1;	

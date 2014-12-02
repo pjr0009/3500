@@ -54,6 +54,9 @@ typedef u_int32_t vaddr_t;   /* type for a virtual address */
  * grows downwards.
  */
 #define USERSTACK   USERTOP
+#define USERSTACKSIZE (512*PAGE_SIZE)
+#define USERSTACKSIZE	(512*PAGE_SIZE)
+#define USERSTACKBASE	(USERSTACK-USERSTACKSIZE)
 
 /*
  * Interface to the low-level module that looks after the amount of

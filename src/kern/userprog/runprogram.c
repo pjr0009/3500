@@ -59,6 +59,7 @@ runprogram(char *progname)
 	vfs_close(v);
 
 	/* Define the user stack in the address space */
+	DEBUG(DB_VM, "DEFINING STACK");
 	result = as_define_stack(curthread->t_vmspace, &stackptr);
 	if (result) {
 		/* thread_exit destroys curthread->t_vmspace */

@@ -9,7 +9,7 @@ struct vm_object *vm_object_create (size_t npages)
 	struct vm_object *vmo = NULL;
 	unsigned i; int result;
 
-	DEBUG(DB_VM, "VMObject: vmo_create: npages = %d\n", npages);
+	DEBUG(DB_VM, "vm_object (page table) created: pages = %d\n", npages);
 
 	vmo = (struct vm_object *)kmalloc(sizeof(struct vm_object));
 	if (vmo == NULL) {
@@ -33,6 +33,7 @@ struct vm_object *vm_object_create (size_t npages)
 		kfree(vmo);
 		return (NULL);
 	}
+	vmo -> base_address = INVALID_VADDR;
 
 	for (i = 0; i < npages; i++) {
 		array_add(vmo -> lpages, NULL);
