@@ -141,6 +141,8 @@ void coremap_free_page(){
 
 paddr_t coremap_allocuser(struct lpage *lp) {
 	// KASSERT(!curthread->t_in_interrupt);
+	DEBUG(DB_VM, "\nalloc user page");
+
 	return coremap_alloc_page(lp, 1 /* dopin */);
 }
 

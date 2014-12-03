@@ -8,17 +8,21 @@
 #include <thread.h>
 #include <addrspace.h>
 #include <synch.h>
+#include <swap.h>
 
 typedef struct {
 	volatile paddr_t lp_paddr;
 	off_t lp_swapaddr;
-	struct lock lp_lock;
+	struct lock* lp_lock;
 } lpage;
 
 
 lpage* lpage_create();
 lpage* lpage_zerofill();
 int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va);
+void lpage_lock_aquire(lpage *lp);
+void lpage_lock_release(lpage *lp);
+
 
 /* lpage flags */
 #define LPF_DIRTY		0x1

@@ -424,6 +424,11 @@ vm_object.o: ${S}/vm/vm_object.c
 SRCS+=${S}/vm/vm_object.c
 OBJS+=vm_object.o
 
+swap.o: ${S}/vm/swap.c
+	${COMPILE.c} ${S}/vm/swap.c
+SRCS+=${S}/vm/swap.c
+OBJS+=swap.o
+
 arraytest.o: ${S}/test/arraytest.c
 	${COMPILE.c} ${S}/test/arraytest.c
 SRCS+=${S}/test/arraytest.c

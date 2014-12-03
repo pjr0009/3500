@@ -121,7 +121,8 @@ addrspace.o: ../../vm/addrspace.c ../../include/types.h machine/types.h \
   ../../include/lib.h machine/setjmp.h ../../include/addrspace.h \
   ../../include/vm.h machine/vm.h opt-dumbvm.h ../../include/array.h \
   ../../include/lpage.h ../../include/thread.h machine/pcb.h \
-  ../../include/synch.h machine/coremap.h ../../include/curthread.h \
+  ../../include/synch.h ../../include/swap.h ../../include/vnode.h \
+  ../../include/uio.h machine/coremap.h ../../include/curthread.h \
   machine/spl.h machine/tlb.h
 cache_mips1.o: ../../arch/mips/mips/cache_mips1.S machine/asmdefs.h
 exception.o: ../../arch/mips/mips/exception.S machine/asmdefs.h \
@@ -171,6 +172,7 @@ coremap.o: ../../arch/mips/mips/coremap.c machine/coremap.h \
   ../../include/thread.h machine/pcb.h ../../include/curthread.h \
   ../../include/addrspace.h ../../include/vm.h machine/vm.h opt-dumbvm.h \
   ../../include/array.h ../../include/lpage.h ../../include/synch.h \
+  ../../include/swap.h ../../include/vnode.h ../../include/uio.h \
   machine/spl.h machine/tlb.h
 array.o: ../../lib/array.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/kern/errno.h \
@@ -187,6 +189,7 @@ kheap.o: ../../lib/kheap.c ../../include/types.h machine/types.h \
   ../../include/kern/errno.h ../../include/thread.h machine/pcb.h \
   ../../include/curthread.h ../../include/addrspace.h opt-dumbvm.h \
   ../../include/array.h ../../include/lpage.h ../../include/synch.h \
+  ../../include/swap.h ../../include/vnode.h ../../include/uio.h \
   machine/tlb.h
 kprintf.o: ../../lib/kprintf.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/stdarg.h ../../include/lib.h \
@@ -329,18 +332,25 @@ lpage.o: ../../vm/lpage.c ../../include/lpage.h ../../include/types.h \
   ../../include/kern/errno.h ../../include/lib.h machine/setjmp.h \
   ../../include/thread.h machine/pcb.h ../../include/addrspace.h \
   ../../include/vm.h opt-dumbvm.h ../../include/array.h \
-  ../../include/synch.h
+  ../../include/synch.h ../../include/swap.h ../../include/vnode.h \
+  ../../include/uio.h
 vm.o: ../../vm/vm.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/kern/errno.h \
   ../../include/lib.h machine/setjmp.h ../../include/thread.h \
   machine/pcb.h ../../include/curthread.h ../../include/addrspace.h \
   ../../include/vm.h machine/vm.h opt-dumbvm.h ../../include/array.h \
   machine/coremap.h ../../include/lpage.h ../../include/synch.h \
+  ../../include/swap.h ../../include/vnode.h ../../include/uio.h \
   machine/spl.h machine/tlb.h
 vm_object.o: ../../vm/vm_object.c ../../include/vm.h \
   ../../include/types.h machine/types.h ../../include/kern/types.h \
   machine/vm.h ../../include/kern/errno.h ../../include/lib.h \
   machine/setjmp.h ../../include/array.h
+swap.o: ../../vm/swap.c ../../include/swap.h ../../include/synch.h \
+  ../../include/types.h machine/types.h ../../include/kern/types.h \
+  machine/vm.h ../../include/kern/errno.h ../../include/lib.h \
+  machine/setjmp.h ../../include/vm.h ../../include/vnode.h \
+  ../../include/uio.h
 arraytest.o: ../../test/arraytest.c ../../include/types.h machine/types.h \
   ../../include/kern/types.h ../../include/lib.h machine/setjmp.h \
   ../../include/array.h ../../include/test.h

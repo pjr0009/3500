@@ -6,13 +6,11 @@ lpage* lpage_create(){
 	if(ret){
 		ret -> lp_paddr  = INVALID_VADDR;
 		ret -> lp_swapaddr = INVALID_PADDR;
-	} 
+        ret -> lp_lock = lock_create("lp_lock");
+    } 
 	return ret;
 }
 
-int lpage_lock(){
-	// lock_acquire(lpage_lock)
-}
 
 
 lpage* lpage_zerofill(){
@@ -52,18 +50,17 @@ lpage* lpage_zerofill(){
 }
 
 int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va){
-    paddr_t oldpa;
+    paddr_t pa;
     off_t swa;
     int writable = 0;
-    
     // lock the lpage before changing lpage attributes
-    // lpage_lock_and_pin(lp);
+    lpage_lock_acquire(lp);
     
     // get physical page address page number
-    oldpa = lp->lp_swapaddr & PAGE_FRAME;
+    pa = lp->lp_swapaddr & PAGE_FRAME;
     
     // check if page in memory - if not, unlock the page and allocate
-    if (oldpa == INVALID_PADDR) {  // page is not in RAM
+    if (pa == INVALID_PADDR) {  // page is not in RAM
         DEBUG(DB_VM, "Page is not in memory.\n");
         // get swap address
         swa = lp->lp_swapaddr;
@@ -76,8 +73,9 @@ int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va){
         // lpage_unlock(lp);
         
         // allocate space in memory
-        oldpa = coremap_allocuser(lp);
-        if (new_frame_number == INVALID_PADDR) {
+        pa = coremap_allocuser(lp);
+
+        if (pa == INVALID_PADDR) {
             DEBUG(DB_VM, "Failed to allocate page in coremap: Out of memory.\n");
             return ENOMEM;
         }
@@ -88,14 +86,15 @@ int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va){
         // acquire global paging lock before performing swap
         // lock_acquire(global_paging_lock);
         // load page into physical memory
-        // swap_pagein(lpa, swa);
+        DEBUG(DB_VM, "LPAGE FAULT");
+        swap_pagein(pa, swa);
         // re-lock the lpage
         // lpage_lock(lp);
         // release global paging lock
         // lock_release(global_paging_lock);
         
         // set the new page address
-        lp->lp_swapaddr = new_frame_number;
+        lp->lp_swapaddr = pa;
     }
     
     switch(faulttype) {
@@ -131,3 +130,12 @@ int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va){
 }
 
 
+void lpage_lock_acquire(lpage *lp){
+    lock_acquire(lp -> lp_lock);
+
+}
+void lpage_lock_release(lpage *lp){
+    lock_release(lp -> lp_lock);
+
+    
+}
