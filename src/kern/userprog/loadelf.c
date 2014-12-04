@@ -41,11 +41,13 @@ load_segment(struct vnode *v, off_t offset, vaddr_t vaddr,
 	struct uio u;
 	int result;
 	size_t fillamt;
+	DEBUG(DB_VM, "\nBOOM1\n");
 
 	if (filesize > memsize) {
 		kprintf("ELF: warning: segment filesize > segment memsize\n");
 		filesize = memsize;
 	}
+
 
 	DEBUG(DB_EXEC, "ELF: Loading %lu bytes to 0x%lx\n", 
 	      (unsigned long) filesize, (unsigned long) vaddr);
@@ -57,17 +59,22 @@ load_segment(struct vnode *v, off_t offset, vaddr_t vaddr,
 	u.uio_segflg = is_executable ? UIO_USERISPACE : UIO_USERSPACE;
 	u.uio_rw = UIO_READ;
 	u.uio_space = curthread->t_vmspace;
+	DEBUG(DB_VM, "\nBOOM2\n");
 
 	result = VOP_READ(v, &u);
 	if (result) {
 		return result;
 	}
 
+	DEBUG(DB_VM, "\nBOOM3\n");
+
 	if (u.uio_resid != 0) {
 		/* short read; problem with executable? */
 		kprintf("ELF: short read on segment - file truncated?\n");
 		return ENOEXEC;
 	}
+
+	DEBUG(DB_VM, "\nBOOM4\n");
 
 	/* Fill the rest of the memory space (if any) with zeros */
 	fillamt = memsize - filesize;
@@ -78,6 +85,8 @@ load_segment(struct vnode *v, off_t offset, vaddr_t vaddr,
 		result = uiomovezeros(fillamt, &u);
 	}
 	
+	DEBUG(DB_VM, "\nBOOM5\n");
+
 	return result;
 }
 
@@ -183,9 +192,11 @@ load_elf(struct vnode *v, vaddr_t *entrypoint)
 		if (result) {
 			return result;
 		}
+
 	}
 
 	result = as_prepare_load(curthread->t_vmspace);
+
 	if (result) {
 		return result;
 	}
@@ -219,10 +230,10 @@ load_elf(struct vnode *v, vaddr_t *entrypoint)
 				ph.p_type);
 			return ENOEXEC;
 		}
-
 		result = load_segment(v, ph.p_offset, ph.p_vaddr, 
 				      ph.p_memsz, ph.p_filesz,
 				      ph.p_flags & PF_X);
+
 		if (result) {
 			return result;
 		}
@@ -232,7 +243,6 @@ load_elf(struct vnode *v, vaddr_t *entrypoint)
 	if (result) {
 		return result;
 	}
-
 	*entrypoint = eh.e_entry;
 
 	return 0;

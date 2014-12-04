@@ -13,7 +13,7 @@
 typedef struct {
 	volatile paddr_t lp_paddr;
 	off_t lp_swapaddr;
-	struct lock* lp_lock;
+	struct semaphore* lp_lock;
 } lpage;
 
 

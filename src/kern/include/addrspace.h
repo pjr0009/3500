@@ -4,6 +4,8 @@
 #include <vm.h>
 #include "opt-dumbvm.h"
 #include <array.h>
+#include <machine/spl.h>
+#include <machine/tlb.h>
 
 struct vnode;
 

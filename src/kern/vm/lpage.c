@@ -1,12 +1,13 @@
 #include <lpage.h>
+#include <machine/coremap.h>
 
 
 lpage* lpage_create(){
-	lpage *ret = (lpage*)kmalloc(sizeof(lpage));
+	lpage *ret = kmalloc(sizeof(lpage));
 	if(ret){
 		ret -> lp_paddr  = INVALID_VADDR;
 		ret -> lp_swapaddr = INVALID_PADDR;
-        ret -> lp_lock = lock_create("lp_lock");
+        ret -> lp_lock = sem_create("lp_lock", 1);
     } 
 	return ret;
 }
@@ -16,19 +17,26 @@ lpage* lpage_create(){
 lpage* lpage_zerofill(){
 	lpage *lp;
 	paddr_t pa;
-	// off_t swa;
+	off_t swa;
+    DEBUG(DB_VM, "\nBOOM11\n");
 
 	lp = lpage_create();
 	if (lp == NULL) {
 		return ENOMEM;
 	}
 
-	// swa = swap_alloc();
-	// if (swa == INVALID_SWAPADDR) {
-	// 	lpage_destroy(lp);
-	// 	return ENOSPC;
-	// }
-	// lp->lp_swapaddr = swa;
+    DEBUG(DB_VM, "\nBOOM12\n");
+
+	swa = swap_alloc();
+    DEBUG(DB_VM, "\nBOOM11\n");
+    
+	if (swa == INVALID_SWAPADDR) {
+		// lpage_destroy(lp);
+		return ENOSPC;
+	}
+    DEBUG(DB_VM, "\nSETTING SWAP VAL TO %d\n", swa);
+    lp->lp_swapaddr = swa;
+    DEBUG(DB_VM, "\nSETTING SWAP VAL TO %d\n", swa);
 
 	// allocate some user page(s)
 	pa = coremap_allocuser(lp);
@@ -49,93 +57,85 @@ lpage* lpage_zerofill(){
 	return 0;
 }
 
-int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va){
-    paddr_t pa;
-    off_t swa;
-    int writable = 0;
-    // lock the lpage before changing lpage attributes
-    lpage_lock_acquire(lp);
-    
-    // get physical page address page number
-    pa = lp->lp_swapaddr & PAGE_FRAME;
-    
-    // check if page in memory - if not, unlock the page and allocate
-    if (pa == INVALID_PADDR) {  // page is not in RAM
-        DEBUG(DB_VM, "Page is not in memory.\n");
-        // get swap address
-        swa = lp->lp_swapaddr;
-        
-        if (swa == INVALID_VADDR) {  // invalid swap address
-            panic("Page fault: Page not found on disk.\n");
-        }
-        
-        // unlock page before entering coremap code
-        // lpage_unlock(lp);
-        
-        // allocate space in memory
-        pa = coremap_allocuser(lp);
 
-        if (pa == INVALID_PADDR) {
-            DEBUG(DB_VM, "Failed to allocate page in coremap: Out of memory.\n");
-            return ENOMEM;
-        }
+int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va)
+{
+    /* Handle  TLB miss. */
+    if ((faulttype == VM_FAULT_READ) || (faulttype == VM_FAULT_WRITE)) {
+        DEBUG(DB_VM,"1");
+        lpage_lock_acquire(lp);
+        DEBUG(DB_VM,"\n2\n");
         
-        // make sure the page is pinned
-        // KASSERT(coremap_pageispinned(lpa));
+        paddr_t pa /*= lp->lp_paddr & PAGE_FRAME*/;
+        DEBUG(DB_VM,"3");
         
-        // acquire global paging lock before performing swap
-        // lock_acquire(global_paging_lock);
-        // load page into physical memory
-        DEBUG(DB_VM, "LPAGE FAULT");
-        swap_pagein(pa, swa);
-        // re-lock the lpage
-        // lpage_lock(lp);
-        // release global paging lock
-        // lock_release(global_paging_lock);
-        
-        // set the new page address
-        lp->lp_swapaddr = pa;
-    }
-    
-    switch(faulttype) {
-        case (VM_FAULT_READ):
-            DEBUG(DB_VM, "vm_fault(): read\n");
-            // read fault so set writable to 0
-            writable = 0;
-            break;
-        case (VM_FAULT_WRITE):
-            DEBUG(DB_VM, "vm_fault(): write\n");
-            // write fault so set it to writable
-            writable = 1;
-            LP_SET(lp, LPF_DIRTY);
-            break;
-        case(VM_FAULT_READONLY):
-            DEBUG(DB_VM, "vm_fault(): readonly\n");
-            // page is new, set it to writable
-            writable = 1;
-            LP_SET(lp, LPF_DIRTY);
-            break;
-        default:
-            panic("Invalid fault type.\n");
-            break;
-    }
-    
-    // unlock lpage before entering coremap code
-    // lpage_unlock(lp);
+        /* If data is not in physical memory, swap in. */
+        // if (pa == INVALID_PADDR) {
+            // ct_majfaults++;
+            off_t swa = lp->lp_swapaddr;
+            // KASSERT(swa != INVALID_SWAPADDR);
+            
+            // lpage_lock_release(lp);
+            DEBUG(DB_VM,"4");
 
-    // put page in TLB
-    // mmu_map(as, va, lpa, writable);
+            pa = coremap_allocuser(lp);
+            
+            /* Check if physical memory was allocated successfully. */
+            if (pa == INVALID_PADDR) {
+                return ENOMEM;
+            }
+            
+            /* Swap in the page. */
+            DEBUG(DB_VM, "Swapping in a page.\n");
+            // KASSERT(coremap_pageispinned(pa));
+            // P(global_paging_lock);
+            swap_pagein(pa, swa);
+            DEBUG(DB_VM,"4");
+            
+            lpage_lock_acquire(lp);
+            // V(global_paging_lock);
+            
+            /* Assert page was not swapped in by another thread. */
+            // KASSERT((lp->lp_paddr & PAGE_FRAME) == INVALID_PADDR);
+            lp->lp_paddr = pa & PAGE_FRAME;
+        // }
+        /* Get dirty bit from existing physical address. */
+        // else {
+        //     // ct_minfaults++;
+        //     DEBUG(DB_VM, "Re-adding entry\n");
+        // }
+        
+        lpage_lock_release(lp);
+        // KASSERT(coremap_pageispinned(pa));
+        
+        /* Enter translation to MMU. */
+        // mmu_map(as, va, pa, LP_ISDIRTY(lp));
+    }
+    /* Handle readonly fault. Update the dirty bit to 1. */
+    else {
+        DEBUG(DB_VM, "!!!Fault type readonly.\n");
+        
+        /* Set dirty bit to 1. */
+        // lpage_lock_and_pin(lp);
+        LP_SET(lp, LPF_DIRTY);
+        paddr_t pa = lp->lp_paddr;
+        lpage_lock_release(lp);
+        
+        /* Update translation in MMU. Set dirty bit to 1. */
+        // mmu_unmap(as, va);
+        // mmu_map(as, va, pa, LPF_DIRTY);
+    }
     
     return 0;
 }
 
 
 void lpage_lock_acquire(lpage *lp){
-    lock_acquire(lp -> lp_lock);
-
+    // P(lp -> lp_lock);
 }
+
 void lpage_lock_release(lpage *lp){
-    lock_release(lp -> lp_lock);
+    // V(lp -> lp_lock);
 
     
 }

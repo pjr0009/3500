@@ -16,9 +16,9 @@
 #define VM_FAULT_READONLY    2    /* A write to a readonly page was attempted*/
 
 /* Invalid physical / virtual addresses for initialization routines */
- #define INVALID_VADDR       0
- #define INVALID_PADDR       0
-
+ #define INVALID_PADDR	((paddr_t)1)
+ #define INVALID_VADDR	((vaddr_t)1)
+ #define INVALID_SWAPADDR	(1)
 
 
 

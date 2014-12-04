@@ -15,6 +15,7 @@
 #include <vm.h>
 #include <syscall.h>
 #include <version.h>
+#include <swap.h>
 
 /*
  * Phillip Robertson & Grace Wang
@@ -64,7 +65,7 @@ boot(void)
 	 * anything at all. You can make it larger though (it's in
 	 * dev/generic/console.c).
 	 */
-	dbflags = DB_VM;
+	dbflags = DB_VM|DB_EXEC;
 	kprintf("\n");
 	kprintf("OS/161 base system version %s\n", BASE_VERSION);
 	kprintf("%s", harvard_copyright);
@@ -85,6 +86,7 @@ boot(void)
 	/* Default bootfs - but ignore failure, in case emu0 doesn't exist */
 	vfs_setbootfs("emu0");
 
+	swap_bootstrap();
 
 	/*
 	 * Make sure various things aren't screwed up.

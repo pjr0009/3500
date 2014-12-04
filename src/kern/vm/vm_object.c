@@ -6,39 +6,43 @@
 struct vm_object *vm_object_create (size_t npages)
 {
 
-	struct vm_object *vmo = NULL;
-	unsigned i; int result;
+	struct vm_object *vmo;
+	unsigned i;
+	int result;
 
-	DEBUG(DB_VM, "vm_object (page table) created: pages = %d\n", npages);
+	// result = swap_reserve(npages);
+	// if (result != 0) {
+	// 	return NULL;
+	// }
 
-	vmo = (struct vm_object *)kmalloc(sizeof(struct vm_object));
+	vmo = kmalloc(sizeof(struct vm_object));
 	if (vmo == NULL) {
-		return (NULL);
+		// swap_unreserve(npages);
+		return NULL;
 	}
 
-	vmo -> lpages = array_create();
-	if (vmo -> lpages == NULL) {
+	vmo->lpages = array_create();
+	if (vmo->lpages == NULL) {
 		kfree(vmo);
-		return (NULL);
+		// swap_unreserve(npages);
+		return NULL;
 	}
 
-	// filled in as_define_region
-	// vmo -> base = 0xdeadbeef;
-	// vmo -> redzone = 0xdeafbeef;
+	vmo->base_address = 0xdeafbeef;		/* make sure these */
 
-	// add zerofilled pages
-	result = array_setsize(vmo -> lpages, npages);
+	/* add the requested number of zerofilled pages */
+	result = array_setsize(vmo->lpages, npages);
 	if (result) {
-		array_destroy(vmo -> lpages);
+		array_destroy(vmo->lpages);
 		kfree(vmo);
-		return (NULL);
-	}
-	vmo -> base_address = INVALID_VADDR;
-
-	for (i = 0; i < npages; i++) {
-		array_add(vmo -> lpages, NULL);
+		// swap_unreserve(npages);
+		return NULL;
 	}
 
-	return (vmo);
+	for (i=0; i<npages; i++) {
+		array_setguy(vmo->lpages, i, NULL);
+	}
+
+	return vmo;
 
 }

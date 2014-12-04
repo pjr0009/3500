@@ -39,6 +39,8 @@ runprogram(char *progname)
 
 	/* Create a new address space. */
 	curthread->t_vmspace = as_create();
+	DEBUG(DB_VM, "\nRUN PROGRAM: ADDRESS SPACE CREATED\n");
+
 	if (curthread->t_vmspace==NULL) {
 		vfs_close(v);
 		return ENOMEM;
@@ -48,7 +50,11 @@ runprogram(char *progname)
 	as_activate(curthread->t_vmspace);
 
 	/* Load the executable. */
+	DEBUG(DB_VM, "\nLOADING ELF\n");
+	
 	result = load_elf(v, &entrypoint);
+	DEBUG(DB_VM, "\nDONE LOADING ELF\n");
+	
 	if (result) {
 		/* thread_exit destroys curthread->t_vmspace */
 		vfs_close(v);

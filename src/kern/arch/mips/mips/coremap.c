@@ -12,7 +12,7 @@ void coremap_bootstrap(void) {
 
 	num_of_pages = (last - first) / PAGE_SIZE;
 
-	global_paging_lock = sem_create("global_paging_lock", 1);
+	global_paging_lock = lock_create("global_paging_lock");
 	
 
 
@@ -87,7 +87,7 @@ paddr_t coremap_alloc_page(struct lpage *lp, int dopin){
 	int candidate = -1;
 	
 	// critical section
-	P(global_paging_lock);
+	lock_acquire(global_paging_lock);
 	DEBUG(DB_VM, "\nAllocating page");
 
 	if(num_coremap_free > 0){
@@ -110,7 +110,7 @@ paddr_t coremap_alloc_page(struct lpage *lp, int dopin){
 			/* page swap; evict someone */
 		} else if (candidate < 0){
 			DEBUG(DB_VM, "\nNo valid coremap entry found!!\n");
-			V(global_paging_lock);
+			lock_release(global_paging_lock);
 			return INVALID_PADDR;
 		} else {
 			DEBUG(DB_VM, "\nCoremap entry %d being allocated\n" , candidate);
@@ -119,7 +119,7 @@ paddr_t coremap_alloc_page(struct lpage *lp, int dopin){
 			coremap[candidate].cm_lp = lp;
 			coremap[candidate].cm_pinned = dopin;
 
-			V(global_paging_lock);
+			lock_release(global_paging_lock);
 			
 			// check if it's a kernel entry
 			if(lp == NULL){
@@ -154,3 +154,4 @@ void coremap_zero_page(paddr_t paddr){
 	va = PADDR_TO_KVADDR(paddr);
 	bzero((char *)va, PAGE_SIZE);
 }
+

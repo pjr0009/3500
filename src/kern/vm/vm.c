@@ -8,6 +8,7 @@
 #include <machine/coremap.h>
 #include <machine/spl.h>
 #include <machine/tlb.h>
+#include <swap.h>
 
 
 
@@ -18,7 +19,7 @@ void vm_bootstrap(void) {
 
 
 int vm_fault(int faulttype, vaddr_t faultaddress){
-	DEBUG(DB_VM, "\nvm: fault: 0x%x\n", faultaddress);
+	DEBUG(DB_VM, "\nENTERING VM FAULT FOR ADDRESS (not-page aligned): %d\n", faultaddress);
 
     int spl;
 	spl = splhigh();
@@ -29,7 +30,6 @@ int vm_fault(int faulttype, vaddr_t faultaddress){
 	
 	    case VM_FAULT_READONLY:
 			/* We always create pages read-write, so we can't get this */
-			panic("vm: got VM_FAULT_READONLY\n");
 			// TLB READ MISS PROPIGATED FROM SYS161
 		
 		case VM_FAULT_READ:
@@ -37,7 +37,6 @@ int vm_fault(int faulttype, vaddr_t faultaddress){
 	    	break;
 
 	    case VM_FAULT_WRITE:
-	    	DEBUG(DB_VM, "\nWRITE VM FAULT\n");
 	    	as_fault(faulttype, faultaddress, as);
 			break;
 	    

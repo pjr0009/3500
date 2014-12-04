@@ -19,6 +19,7 @@ struct addrspace *as_create(void) {
 	}
 	// create array of page tables
 	as -> as_objects = (struct vm_object*)array_create();
+	DEBUG(DB_VM, "\nArray allocated for address space objects\n");
 
 	// verify as_objects array was created successfully
 	if (as->as_objects == NULL) {
@@ -31,7 +32,7 @@ struct addrspace *as_create(void) {
 
 \
 int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
-	DEBUG(DB_VM, "\nENTERING ADDRESS SPACE FAULT FOR ADDRESS %d\n", faultaddress);
+	// DEBUG(DB_VM, "\nENTERING AS FAULT FOR VADDR %d\n", faultaddress);
 	struct vm_object *vmo, *fault_vmo=NULL;
 	int top, bottom, i;
 	for (i = 0; i < array_getnum(as->as_objects); i++) {
@@ -44,17 +45,15 @@ int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
 		}
 	}
 	if(fault_vmo){
-		DEBUG(DB_VM, "\nFOUND PAGE TABLE WITH BASE %d THAT IS SUPPOSED TO CONTAIN LPAGE WITH VADDR %d\n", fault_vmo -> base_address, faultaddress);
-		
-		// offset, lpage entries are indexed by its virtual addresses
+		DEBUG(DB_VM, "\nFOUND VM OBJECT CONTAINING VM FAULT FOR VADDR %d\n", faultaddress);
+		DEBUG(DB_VM, "\nVMO BASE ADDRESS %d\n", fault_vmo -> base_address);
+
 		int lpage_index = (faultaddress - (fault_vmo -> base_address)) / PAGE_SIZE;	
 		lpage* lp = array_getguy(fault_vmo -> lpages, lpage_index);
 		if(lp == NULL){
-			DEBUG(DB_VM, "LPAGE WITH VADDR %d NOT FOUND, CREATING...", faultaddress);
+			DEBUG(DB_VM, "LPAGE NOT FOUND... CREATING");
 			lp = lpage_zerofill();
 			array_setguy(fault_vmo -> lpages, lpage_index, lp);
-			DEBUG(DB_VM, "CREATED ZEROFILLED LPAGE AT INDEX %d", lpage_index);
-
 		}
 
 		return lpage_fault(lp, as, faulttype, faultaddress);
@@ -65,9 +64,6 @@ int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
 };
 
 
-int as_dump(){
-	kprintf("\nPAGE TABLE\n");
-}
 
 
 int
@@ -103,19 +99,11 @@ as_destroy(struct addrspace *as)
 void
 as_activate(struct addrspace *as)
 {
-	int i, spl;
+	/*
+	 * Write this.
+	 */
 
-	(void)as;
-
-	spl = splhigh();
-
-	for (i=0; i<NUM_TLB; i++) {
-		TLB_Write(TLBHI_INVALID(i), TLBLO_INVALID(), i);
-	}
-
-	// _vmstats_inc(VMSTAT_TLB_INVALIDATE);
-
-	splx(spl);
+	(void)as;  // suppress warning until code gets written
 }
 
 /*
@@ -134,7 +122,6 @@ as_activate(struct addrspace *as)
 int as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz, int readable, int writeable, int executable){
 	DEBUG(DB_VM, "\nCREATING ADDRESS SPACE REGION FOR STACK/TEXT/CODE SEGMENT\n");
 	struct vm_object *vmobj;
-	
 	int i, result;
 
 	/* align base address */
@@ -173,6 +160,7 @@ int as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz, int readabl
 	vmobj -> writeable = writeable;
 	vmobj -> executable = executable;
 	vmobj -> base_address = vaddr;
+	DEBUG(DB_VM, "SETTING VMO WITH VADDR %d", vaddr);
 
 	if (vmobj == NULL) {
 		return ENOMEM;
