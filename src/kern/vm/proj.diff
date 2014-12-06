@@ -522,33 +522,6 @@ index 0000000..266ee72
 +# and evaluates variables.
 +#
 +$(KERNEL): $(OBJS)
-diff --git a/src/kern/compile/ASST2/__printf.o b/src/kern/compile/ASST2/__printf.o
-new file mode 100644
-index 0000000..3831bb5
-Binary files /dev/null and b/src/kern/compile/ASST2/__printf.o differ
-diff --git a/src/kern/compile/ASST2/_exit.o b/src/kern/compile/ASST2/_exit.o
-new file mode 100644
-index 0000000..d65c726
-Binary files /dev/null and b/src/kern/compile/ASST2/_exit.o differ
-diff --git a/src/kern/compile/ASST2/addrspace.o b/src/kern/compile/ASST2/addrspace.o
-new file mode 100644
-index 0000000..0a8f634
-Binary files /dev/null and b/src/kern/compile/ASST2/addrspace.o differ
-diff --git a/src/kern/compile/ASST2/array.o b/src/kern/compile/ASST2/array.o
-new file mode 100644
-index 0000000..0bd2b2c
-Binary files /dev/null and b/src/kern/compile/ASST2/array.o differ
-diff --git a/src/kern/compile/ASST2/arraytest.o b/src/kern/compile/ASST2/arraytest.o
-new file mode 100644
-index 0000000..1b5e2d0
-Binary files /dev/null and b/src/kern/compile/ASST2/arraytest.o differ
-diff --git a/src/kern/compile/ASST2/atoi.o b/src/kern/compile/ASST2/atoi.o
-new file mode 100644
-index 0000000..a56027f
-Binary files /dev/null and b/src/kern/compile/ASST2/atoi.o differ
-diff --git a/src/kern/compile/ASST2/autoconf.c b/src/kern/compile/ASST2/autoconf.c
-new file mode 100644
-index 0000000..59a323e
 --- /dev/null
 +++ b/src/kern/compile/ASST2/autoconf.c
 @@ -0,0 +1,455 @@

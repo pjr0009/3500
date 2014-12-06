@@ -29,9 +29,7 @@ int vm_fault(int faulttype, vaddr_t faultaddress){
 	switch (faulttype) {
 	
 	    case VM_FAULT_READONLY:
-			/* We always create pages read-write, so we can't get this */
-			// TLB READ MISS PROPIGATED FROM SYS161
-		
+			break;		
 		case VM_FAULT_READ:
 	    	as_fault(faulttype, faultaddress, as);
 	    	break;
