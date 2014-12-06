@@ -45,7 +45,6 @@ int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
 	}
 	if(fault_vmo){
 		DEBUG(DB_VM, "\nFOUND PAGE TABLE WITH BASE %d THAT IS SUPPOSED TO CONTAIN LPAGE WITH VADDR %d\n", fault_vmo -> base_address, faultaddress);
-		
 		// offset, lpage entries are indexed by its virtual addresses
 		int lpage_index = (faultaddress - (fault_vmo -> base_address)) / PAGE_SIZE;	
 		lpage* lp = array_getguy(fault_vmo -> lpages, lpage_index);
@@ -141,27 +140,6 @@ int as_define_region(struct addrspace *as, vaddr_t vaddr, size_t sz, int readabl
 
 	/* size may not be */
 	sz = ROUNDUP(sz, PAGE_SIZE);
-
-	/*
-	 * Check for overlaps.
-	 */
-	// for (i = 0; i < array_getnum(as->as_objects); i++) {
-	// 	vaddr_t bot, top;
-		
-	// 	vmo = vm_object_array_get(as->as_objects, i);
-	// 	KASSERT(vmo != NULL);
-	// 	bot = vmo->vmo_base;
-	// 	top = bot + PAGE_SIZE * lpage_array_num(vmo->vmo_lpages);
-
-	// 	/* Check guard band, if any */
-	// 	KASSERT(bot >= vmo->vmo_lower_redzone);
-	// 	bot = bot - vmo->vmo_lower_redzone;
-
-	// 	if (check_vaddr+sz > bot && check_vaddr < top) {
-	// 		/* overlap */
-	// 		return EINVAL;
-	// 	}
-	// }
 
 
 	/* Create a new vmo. All pages are marked zerofilled. */
