@@ -51,12 +51,11 @@ int as_fault(int faulttype, vaddr_t faultaddress, struct addrspace*  as){
 		lpage* lp = array_getguy(fault_vmo -> lpages, lpage_index);
 		if(lp == NULL){
 			DEBUG(DB_VM, "LPAGE WITH VADDR %d NOT FOUND, CREATING...", faultaddress);
-			lp = lpage_zerofill();
+			lpage_zerofill(&lp);
+			DEBUG(DB_VM, "CREATED LPAGE WITH PADDR %d AND SWAPADDR %d", lp -> lp_paddr, lp -> lp_swapaddr);
 			array_setguy(fault_vmo -> lpages, lpage_index, lp);
-			DEBUG(DB_VM, "CREATED ZEROFILLED LPAGE AT INDEX %d", lpage_index);
 
 		}
-
 		return lpage_fault(lp, as, faulttype, faultaddress);
 	
 	} else{

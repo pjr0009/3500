@@ -56,14 +56,12 @@ uiomove(void *ptr, size_t n, struct uio *uio)
 			    break;
 		    case UIO_USERSPACE:
 		    case UIO_USERISPACE:
-		    	DEBUG(DB_VM, "BOOM5");
 			    if (uio->uio_rw == UIO_READ) {
 				    result = copyout(ptr, iov->iov_ubase,size);
 
 			    }
 			    else {
 				    result = copyin(iov->iov_ubase, ptr, size);
-		    		DEBUG(DB_VM, "BOOM6");
 
 			    }
 			    if (result) {

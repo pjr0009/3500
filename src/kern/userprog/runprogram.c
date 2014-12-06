@@ -50,10 +50,7 @@ runprogram(char *progname)
 	as_activate(curthread->t_vmspace);
 
 	/* Load the executable. */
-	DEBUG(DB_VM, "\nLOADING ELF\n");
-	
 	result = load_elf(v, &entrypoint);
-	DEBUG(DB_VM, "\nDONE LOADING ELF\n");
 	
 	if (result) {
 		/* thread_exit destroys curthread->t_vmspace */

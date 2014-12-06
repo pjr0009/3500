@@ -18,7 +18,7 @@ typedef struct {
 
 
 lpage* lpage_create();
-lpage* lpage_zerofill();
+lpage* lpage_zerofill(lpage **lp);
 int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va);
 void lpage_lock_aquire(lpage *lp);
 void lpage_lock_release(lpage *lp);

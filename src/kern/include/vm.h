@@ -19,7 +19,8 @@
  #define INVALID_PADDR	((paddr_t)1)
  #define INVALID_VADDR	((vaddr_t)1)
  #define INVALID_SWAPADDR	(1)
-
+ #define ISKERNEL(x) ((x) & 0x00000001)
+ #define SET_KERNEL(x) ((x) | 0x00000001)
 
 
 /* Initialization function */

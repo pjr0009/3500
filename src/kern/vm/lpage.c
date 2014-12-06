@@ -14,32 +14,32 @@ lpage* lpage_create(){
 
 
 
-lpage* lpage_zerofill(){
+lpage* lpage_zerofill(lpage ** lpret){
 	lpage *lp;
 	paddr_t pa;
 	off_t swa;
-    DEBUG(DB_VM, "\nBOOM11\n");
 
 	lp = lpage_create();
 	if (lp == NULL) {
 		return ENOMEM;
 	}
 
-    DEBUG(DB_VM, "\nBOOM12\n");
 
 	swa = swap_alloc();
-    DEBUG(DB_VM, "\nBOOM11\n");
     
 	if (swa == INVALID_SWAPADDR) {
 		// lpage_destroy(lp);
 		return ENOSPC;
 	}
-    DEBUG(DB_VM, "\nSETTING SWAP VAL TO %d\n", swa);
-    lp->lp_swapaddr = swa;
-    DEBUG(DB_VM, "\nSETTING SWAP VAL TO %d\n", swa);
+    // allocate some user page(s)
+    pa = coremap_allocuser(lp);
 
-	// allocate some user page(s)
-	pa = coremap_allocuser(lp);
+    lp->lp_paddr = pa | LPF_DIRTY;
+    lp->lp_swapaddr = swa;
+
+
+
+    DEBUG(DB_VM ,"PADDR %d", pa);
 	if (pa == INVALID_PADDR) {
 		/* lpage_destroy will clean up the swap */
 		// lpage_destroy(lp);
@@ -48,11 +48,10 @@ lpage* lpage_zerofill(){
 
 	// lpage_lock(lp);
 
-	lp -> lp_swapaddr = pa | LPF_DIRTY;
 
 	// KASSERT(coremap_pageispinned(pa));
 
-	// *lpret = lp;
+	*lpret = lp;
 	// *paret = pa;
 	return 0;
 }
@@ -60,14 +59,11 @@ lpage* lpage_zerofill(){
 
 int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va)
 {
+
     /* Handle  TLB miss. */
     if ((faulttype == VM_FAULT_READ) || (faulttype == VM_FAULT_WRITE)) {
-        DEBUG(DB_VM,"1");
         lpage_lock_acquire(lp);
-        DEBUG(DB_VM,"\n2\n");
-        
-        paddr_t pa /*= lp->lp_paddr & PAGE_FRAME*/;
-        DEBUG(DB_VM,"3");
+        paddr_t pa = (lp->lp_paddr & PAGE_FRAME);
         
         /* If data is not in physical memory, swap in. */
         // if (pa == INVALID_PADDR) {
@@ -76,9 +72,8 @@ int lpage_fault(lpage *lp, struct addrspace *as, int faulttype, vaddr_t va)
             // KASSERT(swa != INVALID_SWAPADDR);
             
             // lpage_lock_release(lp);
-            DEBUG(DB_VM,"4");
+            DEBUG(DB_VM,"\n\n\n\n4");
 
-            pa = coremap_allocuser(lp);
             
             /* Check if physical memory was allocated successfully. */
             if (pa == INVALID_PADDR) {

@@ -41,7 +41,6 @@ load_segment(struct vnode *v, off_t offset, vaddr_t vaddr,
 	struct uio u;
 	int result;
 	size_t fillamt;
-	DEBUG(DB_VM, "\nBOOM1\n");
 
 	if (filesize > memsize) {
 		kprintf("ELF: warning: segment filesize > segment memsize\n");
@@ -59,14 +58,12 @@ load_segment(struct vnode *v, off_t offset, vaddr_t vaddr,
 	u.uio_segflg = is_executable ? UIO_USERISPACE : UIO_USERSPACE;
 	u.uio_rw = UIO_READ;
 	u.uio_space = curthread->t_vmspace;
-	DEBUG(DB_VM, "\nBOOM2\n");
 
 	result = VOP_READ(v, &u);
 	if (result) {
 		return result;
 	}
 
-	DEBUG(DB_VM, "\nBOOM3\n");
 
 	if (u.uio_resid != 0) {
 		/* short read; problem with executable? */
@@ -74,7 +71,6 @@ load_segment(struct vnode *v, off_t offset, vaddr_t vaddr,
 		return ENOEXEC;
 	}
 
-	DEBUG(DB_VM, "\nBOOM4\n");
 
 	/* Fill the rest of the memory space (if any) with zeros */
 	fillamt = memsize - filesize;
@@ -85,7 +81,7 @@ load_segment(struct vnode *v, off_t offset, vaddr_t vaddr,
 		result = uiomovezeros(fillamt, &u);
 	}
 	
-	DEBUG(DB_VM, "\nBOOM5\n");
+	DEBUG(DB_VM, "\nDONE LOADING ELF\n");
 
 	return result;
 }

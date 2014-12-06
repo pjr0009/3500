@@ -8,7 +8,6 @@
 #include <lib.h>
 #include <kern/stat.h>
 
-
 void swap_bootstrap(void){
   int rv;
   struct stat st;
@@ -107,7 +106,7 @@ swap_alloc(void)
 {
   u_int32_t rv, index;
   
-  // lock_acquire(swaplock);
+  lock_acquire(swaplock);
 
   // KASSERT(swap_free_pages <= swap_total_pages);
   // KASSERT(swap_reserved_pages <= swap_free_pages);
@@ -122,7 +121,7 @@ swap_alloc(void)
   swap_reserved_pages--;
   swap_free_pages--;
 
-  // lock_release(swaplock);
+  lock_release(swaplock);
 
   return index*PAGE_SIZE;
 }

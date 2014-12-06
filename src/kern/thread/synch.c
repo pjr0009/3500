@@ -143,6 +143,7 @@ lock_acquire(struct lock *lock)
   splx(spl);
 }
 
+
 void
 lock_release(struct lock *lock)
 {

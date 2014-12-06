@@ -127,7 +127,7 @@ mips_trap(struct trapframe *tf)
 		}
 		break;
 	case EX_TLBS:
-		DEBUG(DB_VM, "\nTLB WRITE MISS FOR VADDR: %d CALLING VM FAULT", tf -> tf_vaddr);
+		DEBUG(DB_VM, "\nTLB MISS WHILE TRYING TO WRITE TO VIRTUAL ADDRESS: %d CALLING VM FAULT", tf -> tf_vaddr);
 		if (vm_fault(VM_FAULT_WRITE, tf->tf_vaddr)==0) {
 			goto done;
 		}
