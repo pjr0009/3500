@@ -1,0 +1,73 @@
+Phillip Robertson & Grace Wang design document for comp 3500 project 5
+
+
+Paging implementation: We started our implementation with coremap. We figured this would be a good place to start since it is 
+
+the canonical source of virtual address to physical (frame in memory) address translations. Our implementation of the coremap was 
+
+an array filled with coremap entry objects. We leveraged the existing array implementation to avoid a custom array 
+
+implementation. The coremap is indexed by it's physical addres and contains a pointer to the lpage it maps to. it also 
+
+contains some additional metadata that allowed us to distinguish synchronization issues (i.e. pinned 0/1). The coremap is the 
+
+place that we went ultimately go when we want to malloc new memory (ultimately kmalloc called alloc_n_pages to free up some 
+
+coremap entries). alloc essentially frees and pins entries in the coremap and returns a physical address that will be later 
+
+used. After completing our coremap, we move on to the swap. The swap contains functions to bootstrap the actual swapfile, 
+
+pagein, and pageout items from the swap file. Page in and page out use VOP_READ and VOP_WRITE to read and write pages from the 
+
+swap file that will be loaded into memory or saved to disk, respectively. another important function is as_define_region. This 
+
+function is called to initialize, among other things, an array of as_objects ( which is simply a vm_object aka table of lpages 
+
++ metadata). Our implementation of vm_object was a little more than simply a page table because of requirements for our address 
+
+space regions. For example when we define a region in as_define_region it may be the text segment, code segment, or data 
+
+segment. Because of this we need to assign the appropriate permissions to the as_object that part of that address space region (i.e. the code 
+
+segment should be 'executable', but not 'writable', etc...). Because of this, our vm_object data structure is more than just an 
+
+lpage table, it also contains these 'permissions'. Our Lpages are similar and essentially the inverse of a coremap entry, they 
+
+are indexed by their virtual address and contain a physical address in which the actual data is stored to (could be referred to 
+
+as a "frame number" at a high-level sense). lpage.h contains some bitwise operations that allow us to bitmask the address if 
+
+it's been modified in any way (aka set to dirty). this way when we evict the lpage at a later time we know if we need to page 
+
+out the data. Our paging works as follows, sys 161 throws a tlb exception for various reasons, it is caught in mips_trap, we 
+
+call VMfault with the appropriate information, which calls as_fault. as_fault will locate the vm object within its respective 
+
+address space objects, and look for the range in which the lpage should exist, if it exists already we update the tlb, if it 
+
+doesn't we zerofill a new lpage entry and call coremap_allocuser to create a coremap entry, we also alloc swap space for it as 
+
+well. Once we've created the lpage, we call lpage_fault. lpage fault will check and see if the lpage is resident in the 
+
+physical memory. If it isn't we swap it in and then call mmu_map to update the tlb. Other small nuances include making sure 
+
+that we invalidate the tlb entries upon switching threads because the tlb entries are based upon the idea that we have a 
+
+certain address space per process and when we switch out address spaces that's 'seen' by the processor we need to invalidate the tlb entries, the net effect 
+
+of this is that we will initially have some tlb misses for the new running process but the will be resolved gradually. Our 
+
+paging algorithm will evict based on lru (least recently used) pages and swap in non-resident pages on demand. when we evict a 
+
+page we need to first mark it as not resident in the coremap and also invalidate its tlb entry. Once we do that we will swap 
+
+out the page using pageout (if its a dirty page) then we will have a freed (pinned) coremap entry as requested. The tlb is the 
+
+place that looks up the memory addresses quickly in order to prevent further steps like vm_fault, as_fault, etc... and prevents 
+
+us from reading multiple times from memory for a single memory read. It acts as a quick cache to look up address translations. 
+
+We need to make sure that when processes get swapped out, that we invalidate the tlb entries. also when we swap in a page that 
+
+is resident to memory we need to update the tlb index so that it hits on subsequent address requests
+
