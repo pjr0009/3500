@@ -41,6 +41,4 @@ int ft_set(struct filetable* ft, struct filedescriptor* fdn, int fti);
 int ft_add(struct filetable* ft, struct filedescriptor* fdn);
 int ft_remove(struct filetable* ft, int fti);
 int ft_destroy(struct filetable* ft);
-void ft_test_list(struct filetable* ft);
-void ft_test(struct filetable* ft);
 #endif

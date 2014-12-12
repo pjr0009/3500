@@ -22,12 +22,10 @@ int sys_write(int *retval, int index, void *buf, size_t nbytes) {
             return ENOMEM;
         }
     }
-    //Get the file descriptor from the opened list of file descriptors that the current thread has, based on the index given.
     struct filedescriptor* fd = ft_get(curthread->ft, index);
     if (fd == NULL) {
         return EBADF;
     }
-    //Make sure that the file is opened for writing.
     switch (O_ACCMODE & fd->mode) {
         case O_WRONLY:
         case O_RDWR:
@@ -35,23 +33,17 @@ int sys_write(int *retval, int index, void *buf, size_t nbytes) {
         default:
             return EBADF;
     }
-    //Make the uio
     struct uio u;
     mk_kuio(&u, (void *) buf, nbytes, fd->offset, UIO_WRITE);
-    ///lock_acquire(writelock);
     int spl = splhigh();
-    //Write
     int sizewrite = VOP_WRITE(fd->fdvnode, &u);
     splx(spl);
-    ///lock_release(writelock);
 
     if (sizewrite) {
         return sizewrite;
     }
-    //Find the number of bytes written
     sizewrite = nbytes - u.uio_resid;
     *retval = sizewrite;
-    //Update the offset
     fd->offset += sizewrite;
     return 0;
 }

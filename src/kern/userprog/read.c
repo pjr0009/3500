@@ -20,31 +20,24 @@ int sys_read(int *retval, int index, void *buf, size_t nbytes) {
         return EBADF;
     }
 
-    //Make sure that the file is opened for writing.
-    // switch (O_ACCMODE & fd->mode) {
-    //     case O_RDONLY:
-    //     case O_RDWR:
-    //         break;
-    //     default:
-    //         return EBADF;
-    // }
-    //Make the uio
+    switch (O_ACCMODE & fd->mode) {
+        case O_RDONLY:
+        case O_RDWR:
+            break;
+        default:
+            return EBADF;
+    }
     struct uio u;
     mk_kuio(&u, (void *) buf, nbytes, fd->offset, UIO_READ);
-    //Disable interrupt
     int spl;
     spl = splhigh();
-    //Read
     int sizeread = VOP_READ(fd->fdvnode, &u);
     splx(spl);
     if (sizeread) {
         return sizeread;
     }
-    //Find the number of bytes read
     sizeread = u.uio_resid;
-
     *retval = sizeread;
-    //Update the offset
     fd->offset += sizeread;
     return 0;
 }

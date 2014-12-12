@@ -40,21 +40,17 @@ pid_t sys_fork(struct trapframe *tf) {
     }  
     
     child_thread->parent = curthread;
-    //add new process to list of children
     new_child->pid = child_thread->pid;
     new_child->finished = 0;
-    new_child->exit_code = -2; //not really needed
     new_child->next = curthread->children;
     curthread->children = new_child;
     
-    int err = as_copy(curthread->t_vmspace, &child_thread->t_vmspace); //copy the data to the child process's new address space
+    int err = as_copy(curthread->t_vmspace, &child_thread->t_vmspace);
     
-    //error handler
     if (err != 0) {
-        // DEBUG(DB_THREADS, "Not enough memory to copy address space in fork. Closing child...\n");
         child_thread->t_vmspace = NULL;
-        child_thread->parent = NULL; //to prevent thread_destroy from freeing a non-existant pid
-        md_initpcb(&child_thread->t_pcb, child_thread->t_stack, 0, 0, &thread_exit); //set new thread to delete itself
+        child_thread->parent = NULL; 
+        md_initpcb(&child_thread->t_pcb, child_thread->t_stack, 0, 0, &thread_exit); 
         splx(spl);
         return err;
     }
@@ -64,5 +60,5 @@ pid_t sys_fork(struct trapframe *tf) {
     
     int retval = child_thread->pid;
     splx(spl);
-    return retval; //the parent thread returns this.
+    return retval;
 }

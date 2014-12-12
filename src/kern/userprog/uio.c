@@ -34,11 +34,6 @@ uiomove(void *ptr, size_t n, struct uio *uio)
 		}
 
 		if (size==0) {
-			/* 
-			 * This should only happen if you set uio_resid
-			 * incorrectly (to more than the total length of
-			 * buffers the uio points to). 
-			 */
 			panic("uiomove: size reached 0\n");
 		}
 
